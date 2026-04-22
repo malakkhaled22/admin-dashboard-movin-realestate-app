@@ -1,0 +1,54 @@
+<div class="properties-container">
+  <div class="page-title-section">
+    <h2>Property Approvals</h2>
+    <p>Review and manage property listings waiting for approval</p>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tab-buttons">
+    <button [class.active]="currentTab==='pending'" (click)="fetchProperties('pending')">Pending</button>
+    <button [class.active]="currentTab==='approved'" (click)="fetchProperties('approved')">Approved</button>
+    <button [class.active]="currentTab==='rejected'" (click)="fetchProperties('rejected')">Rejected</button>
+    <button [class.active]="currentTab==='all'" (click)="fetchProperties('all')">All</button>
+  </div>
+
+  <!-- Table -->
+  <div class="table-card">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Owner</th>
+          <th>Price</th>
+          <th>Location</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let prop of properties">
+          <td>
+            <div class="prop-cell">
+              <img [src]="prop.images?.[0] || 'assets/placeholder.jpg'" class="prop-thumb">
+              <span class="prop-title">{{ prop.title || prop.type || 'No Title' }}</span>
+            </div>
+          </td>
+          <td>{{ prop.seller?.username || 'Unknown' }}</td>
+          <td>{{ prop.price || 0 | currency:'EGP ' }}</td>
+          <td>{{ prop.location || '-' }}</td>
+          <td>{{ prop.status || '-' }}</td>
+          <td>
+            <div class="action-btns">
+              <button *ngIf="prop.status==='pending'" class="approve-btn" (click)="approve(prop._id)">Approve</button>
+              <button *ngIf="prop.status==='pending'" class="reject-btn" (click)="reject(prop._id)">Reject</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="properties.length === 0" class="empty-state">
+      <p>No properties in this category.</p>
+    </div>
+  </div>
+</div>

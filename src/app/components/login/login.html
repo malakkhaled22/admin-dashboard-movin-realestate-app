@@ -1,0 +1,40 @@
+<div class="login-page">
+  <div class="login-card">
+    <div class="logo-section">
+      <div class="logo-box">🏠</div>
+      <h1>Welcome to Movin</h1>
+      <p>Your journey to the perfect property starts here</p>
+    </div>
+
+    <div class="tabs">
+      <button class="active">Login</button>
+      <button>Sign Up</button>
+    </div>
+
+    <form (ngSubmit)="onLogin()">
+      <div class="input-group">
+        <label>Email</label>
+        <div class="input-wrapper">
+          <span class="icon">✉️</span>
+          <input type="email" name="email" [(ngModel)]="loginData.email" placeholder="Enter your email" required>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>Password</label>
+        <div class="input-wrapper">
+          <span class="icon">🔒</span>
+          <input type="password" name="password" [(ngModel)]="loginData.password" placeholder="Enter your password" required>
+        </div>
+      </div>
+
+      <p class="forgot">Forgot Password?</p>
+
+      <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+
+      <button type="submit" class="login-btn">Login</button>
+    </form>
+
+    <p class="terms">By continuing, you agree to our <span>Terms of Service</span></p>
+  </div>
+</div>

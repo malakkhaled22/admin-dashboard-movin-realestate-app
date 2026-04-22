@@ -1,0 +1,98 @@
+<div class="main-layout">
+  <div class="page-container">
+
+    <header class="shared-header" *ngIf="!isLoginPage()">
+
+      <!-- Search Box -->
+      <div class="search-box">
+        <div class="input-group">
+          <input type="text" [(ngModel)]="searchQuery" (keyup.enter)="onGlobalSearch()"
+            placeholder="Search users or properties...">
+          <button (click)="onGlobalSearch()" class="search-btn">🔍</button>
+        </div>
+
+        <div *ngIf="searchResults.users.length > 0 || searchResults.properties.length > 0"
+          class="search-results-dropdown">
+          <div class="results-header">
+            <span>Results for "{{ searchQuery }}"</span>
+            <button (click)="clearSearch()" class="close-btn">×</button>
+          </div>
+
+          <div class="results-body">
+            <!-- Users -->
+            <div *ngFor="let user of searchResults.users" class="result-item" (click)="openModal(user, 'user')"
+              style="cursor:pointer;">
+              <div class="avatar-mini">
+                {{ (user.username || 'U')[0] | uppercase }}
+              </div>
+              <div class="info">
+                <p class="name">{{ user.username }}</p>
+                <p class="sub">{{ user.email }}</p>
+              </div>
+            </div>
+
+            <!-- Properties -->
+            <div *ngFor="let prop of searchResults.properties" class="result-item" (click)="openModal(prop, 'property')"
+              style="cursor:pointer;">
+              <div class="prop-icon">🏠</div>
+              <div class="info">
+                <p class="name">{{ prop.type }} - {{ prop.location }}</p>
+                <p class="sub">{{ prop.price | currency:'EGP ' }}</p>
+              </div>
+            </div>
+
+            <!-- No results -->
+            <div *ngIf="searchResults.users.length === 0 && searchResults.properties.length === 0" class="no-results">
+              No results found for "{{ searchQuery }}"
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin Profile -->
+      <div class="admin-profile">
+        <div class="info">
+          <span class="name">Admin User</span>
+          <span class="email">admin@movin.com</span>
+        </div>
+        <div class="avatar">A</div>
+      </div>
+
+    </header>
+
+    <!-- Main content -->
+    <main class="content-body">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+
+  <!-- Modal -->
+  <div *ngIf="selectedItem" class="modal-backdrop" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <button class="close-btn" (click)="closeModal()">×</button>
+
+      <div *ngIf="selectedItemType === 'user'">
+        <h3>User Details</h3>
+        <p><strong>Username:</strong> {{ selectedItem.username }}</p>
+        <p><strong>Email:</strong> {{ selectedItem.email }}</p>
+        <p *ngIf="selectedItem._id">
+          <strong>ID:</strong> {{ selectedItem._id }}
+        </p>
+      </div>
+
+      <div *ngIf="selectedItemType === 'property'">
+        <h3>Property Details</h3>
+        <p><strong>Type:</strong> {{ selectedItem.type }}</p>
+        <p><strong>Location:</strong> {{ selectedItem.location }}</p>
+        <p><strong>Price:</strong> {{ selectedItem.price | currency:'EGP ' }}</p>
+        <p><strong>Description:</strong> {{ selectedItem.description }}</p>
+        <p><strong>Status:</strong> {{ selectedItem.status }}</p>
+        <p *ngIf="selectedItem.seller">
+          <strong>Seller Email:</strong> {{ selectedItem.seller.email }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+</div>

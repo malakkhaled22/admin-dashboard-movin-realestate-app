@@ -1,0 +1,39 @@
+<div class="users-container">
+  <div class="page-title-section">
+    <h2>Users Management</h2>
+    <p>View and manage all registered users on the platform</p>
+  </div>
+
+  <div class="table-card">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            <span class="status-badge" [class.active]="!user.isBlocked" [class.blocked]="user.isBlocked">
+              {{ user.isBlocked ? 'Blocked' : 'Active' }}
+            </span>
+          </td>
+          <td>
+            <button class="action-btn" (click)="toggleBlock(user._id, user.isBlocked)">
+              {{ user.isBlocked ? 'Unblock' : 'Block' }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="users.length === 0" class="loading-state">
+      Fetching users...
+    </div>
+  </div>
+</div>

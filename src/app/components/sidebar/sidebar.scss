@@ -1,0 +1,60 @@
+.sidebar {
+  height: 100%;
+  background-color: #1A1D26; // اللون الكحلي الغامق
+  color: white;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+
+  .logo-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 50px;
+
+    .logo-box {
+      background: #FFB400; // اللون الأصفر
+      color: #1A1D26;
+      width: 45px;
+      height: 45px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 24px;
+    }
+
+    .brand-name {
+      font-size: 26px;
+      font-weight: bold;
+    }
+  }
+
+  .nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .menu-item {
+      display: block;
+      padding: 15px 20px;
+      color: #A3AED0; // لون الخط الرمادي
+      text-decoration: none; // يشيل الخط اللي تحت اللينك الأزرق
+      border-radius: 15px;
+      font-size: 16px;
+      transition: 0.3s;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.05);
+        color: white;
+      }
+
+      &.active {
+        background-color: #FFB400; // اللون الأصفر لما الصفحة تكون شغالة
+        color: #1A1D26;
+        font-weight: bold;
+      }
+    }
+  }
+}

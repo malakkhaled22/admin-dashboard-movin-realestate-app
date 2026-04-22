@@ -1,0 +1,62 @@
+.users-container {
+  padding: 10px;
+
+  .table-card {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0px 18px 40px rgba(112, 144, 176, 0.08);
+    margin-top: 20px;
+  }
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    text-align: left;
+    padding: 15px;
+    color: #a3aed0;
+    font-size: 14px;
+    border-bottom: 1px solid #f4f7fe;
+  }
+
+  td {
+    padding: 15px;
+    color: #2b3674;
+    font-weight: 600;
+    border-bottom: 1px solid #f4f7fe;
+  }
+
+  .status-badge {
+    padding: 5px 12px;
+    border-radius: 10px;
+    font-size: 12px;
+
+    &.active {
+      background: #e6faf5;
+      color: #05cd99;
+    }
+
+    &.blocked {
+      background: #feeef2;
+      color: #ee5d50;
+    }
+  }
+
+  .action-btn {
+    background: #f4f7fe;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 10px;
+    color: #2b3674;
+    cursor: pointer;
+    font-weight: bold;
+
+    &:hover {
+      background: #ffb400;
+      color: white;
+    }
+  }
+}

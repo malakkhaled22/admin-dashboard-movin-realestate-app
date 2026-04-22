@@ -1,0 +1,76 @@
+<div class="reports-container">
+  <div class="page-title-section">
+    <h2>Reports & Complaints</h2>
+    <p>Review and resolve issues reported by users</p>
+  </div>
+
+  <div class="table-card">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Reporter</th>
+          <th>Subject</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let report of reports">
+          <!-- Reporter -->
+          <td>
+            <div class="user-info">
+              <span class="name">{{ report.reportedBy?.username || 'Unknown' }}</span>
+              <span class="email">{{ report.reportedBy?.email || '' }}</span>
+            </div>
+          </td>
+
+          <!-- Subject -->
+          <td>
+            <div class="subject-info">
+              <strong>{{ report.subject }}</strong>
+              <p>{{ report.message ? (report.message | slice:0:40) + '...' : '' }}</p>
+            </div>
+          </td>
+
+          <!-- Date -->
+          <td>{{ report.createdAt | date:'shortDate' }}</td>
+
+          <!-- Status -->
+          <td>
+            <span class="status-badge" [ngClass]="report.status">
+              {{ report.status }}
+            </span>
+          </td>
+
+          <!-- Actions -->
+          <td>
+            <div class="action-buttons">
+              <button class="btn-view" (click)="viewReport(report)">View Details</button>
+              <button *ngIf="report.status === 'pending'" class="btn-resolve"
+                (click)="resolveReport(report._id)">Resolve</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="reports.length === 0" class="empty-state">
+      <p>No reports found.</p>
+    </div>
+  </div>
+  <div class="report-modal" *ngIf="selectedReport">
+    <div class="modal-content">
+      <h3>Report Details</h3>
+      <p><strong>Reporter:</strong> {{ selectedReport.reportedBy?.username }} ({{ selectedReport.reportedBy?.email }})</p>
+      <p><strong>Target Type:</strong> {{ selectedReport.targetType }}</p>
+      <p><strong>Subject:</strong> {{ selectedReport.subject }}</p>
+      <p><strong>Message:</strong> {{ selectedReport.message }}</p>
+      <p><strong>Status:</strong> {{ selectedReport.status }}</p>
+      <p><strong>Created At:</strong> {{ selectedReport.createdAt | date:'full' }}</p>
+  
+      <button class="btn-close" (click)="closeDetails()">Close</button>
+    </div>
+  </div>
+
+</div>

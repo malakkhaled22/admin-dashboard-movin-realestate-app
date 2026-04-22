@@ -1,0 +1,142 @@
+<div class="overview-container">
+  <div class="page-title-section">
+    <h2>Overview</h2>
+    <p>Monitor your platform's key metrics and performance</p>
+  </div>
+
+  <div class="stats-grid">
+
+    <div class="stat-card">
+      <div class="card-info">
+        <span class="label">Total Users</span>
+        <h2 class="value">{{ stats?.users?.total || 0 }}</h2>
+        <span class="trend up">{{ stats?.users?.buyers || 0 }} Buyers | {{ stats?.users?.sellers || 0 }} Sellers</span>
+      </div>
+      <div class="card-icon blue-bg">👥</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="card-info">
+        <span class="label">Pending Properties</span>
+        <h2 class="value">{{ stats?.properties?.pending || 0 }}</h2>
+        <span class="trend">Awaiting review</span>
+      </div>
+      <div class="card-icon orange-bg">⏳</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="card-info">
+        <span class="label">Total Properties</span>
+        <h2 class="value">{{ stats?.properties?.total || 0 }}</h2>
+        <span class="trend up">In database</span>
+      </div>
+      <div class="card-icon yellow-bg">🏢</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="card-info">
+        <span class="label">Approved Properties</span>
+        <h2 class="value">{{ stats?.properties?.approved || 0 }}</h2>
+        <span class="trend green">Live on platform</span>
+      </div>
+      <div class="card-icon green-bg">✅</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="card-info">
+        <span class="label">Rejected Properties</span>
+        <h2 class="value">{{ stats?.properties?.rejected || 0 }}</h2>
+        <span class="trend red">Action required</span>
+      </div>
+      <div class="card-icon red-bg">🚫</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="card-info">
+        <span class="label">Active Reports</span>
+        <h2 class="value">8</h2>
+        <span class="trend warning">Pending resolution</span>
+      </div>
+      <div class="card-icon pink-bg">⚠️</div>
+    </div>
+
+  </div>
+  <div class="charts-section">
+    <div class="chart-card">
+      <h3>Monthly Growth</h3>
+      <div class="chart-container">
+        <canvas id="growthChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <h3>Property Status</h3>
+      <div class="chart-container">
+        <canvas id="statusChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-section">
+    <div class="activity-card">
+      <div class="card-header">
+        <h3>Recent Activity</h3>
+        <button class="view-all">See all</button>
+      </div>
+      <div class="activity-list">
+        <div class="activity-item">
+          <div class="activity-icon blue-light">👤</div>
+          <div class="activity-info">
+            <p><strong>New user registered</strong></p>
+            <span>sarah.johnson@example.com</span>
+          </div>
+          <span class="activity-time">2 mins ago</span>
+        </div>
+
+        <div class="activity-item">
+          <div class="activity-icon green-light">🏠</div>
+          <div class="activity-info">
+            <p><strong>Property approved</strong></p>
+            <span>Luxury Villa in Miami</span>
+          </div>
+          <span class="activity-time">15 mins ago</span>
+        </div>
+
+        <div class="activity-item">
+          <div class="activity-icon yellow-light">📝</div>
+          <div class="activity-info">
+            <p><strong>Report resolved</strong></p>
+            <span>RPT-156</span>
+          </div>
+          <span class="activity-time">1 hour ago</span>
+        </div>
+
+        <div class="activity-item">
+          <div class="activity-icon red-light">🚫</div>
+          <div class="activity-info">
+            <p><strong>User blocked</strong></p>
+            <span>spam.user@example.com</span>
+          </div>
+          <span class="activity-time">2 hours ago</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="status-summary-card">
+      <div class="status-row">
+        <div class="dot green"></div>
+        <span class="status-label">Approved</span>
+        <span class="status-count">{{ stats?.properties?.approved || 0 }}</span>
+      </div>
+      <div class="status-row">
+        <div class="dot yellow"></div>
+        <span class="status-label">Pending</span>
+        <span class="status-count">{{ stats?.properties?.pending || 0 }}</span>
+      </div>
+      <div class="status-row">
+        <div class="dot red"></div>
+        <span class="status-label">Rejected</span>
+        <span class="status-count">{{ stats?.properties?.rejected || 0 }}</span>
+      </div>
+    </div>
+  </div>
+</div>
