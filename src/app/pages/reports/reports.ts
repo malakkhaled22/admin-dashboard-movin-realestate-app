@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient} from '@angular/common/http';
-import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { CommonModule, DatePipe, SlicePipe } from '@angular/common';
 
 @Component({
   selector: 'app-reports',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, DatePipe, SlicePipe],
   templateUrl: './reports.html',
   styleUrls: ['./reports.scss']
 })
 export class ReportsComponent implements OnInit {
   reports: any[] = [];
   selectedReport: any = null;
-  readonly API_URL = 'https://movin-app.vercel.app/api/reports/admin/all';
+
+  readonly API_URL = 'https://movin-backend-production.up.railway.app/api/reports/admin';
 
   constructor(private http: HttpClient) { }
 
@@ -21,7 +22,7 @@ export class ReportsComponent implements OnInit {
   }
 
   fetchReports() {
-    this.http.get<any>(this.API_URL).subscribe({
+    this.http.get<any>(`${this.API_URL}/all`).subscribe({
       next: (res) => {
         this.reports = res.reports || [];
       },
@@ -30,21 +31,21 @@ export class ReportsComponent implements OnInit {
   }
 
   resolveReport(id: string) {
-    this.http.patch(`https://movin-app.vercel.app/api/reports/admin/${id}/status`, { status: 'resolved' })
+    this.http.patch(`${this.API_URL}/${id}/status`, { status: 'resolved' })
       .subscribe({
         next: () => {
           alert('Report resolved successfully!');
           this.fetchReports();
         },
-        error: (err) => console.error('Resolve error', err)
+        error: (err) => alert(err.error?.message || 'Error resolving report')
       });
   }
 
   viewReport(report: any) {
-    this.selectedReport = report; 
+    this.selectedReport = report;
   }
 
   closeDetails() {
-    this.selectedReport = null; 
+    this.selectedReport = null;
   }
 }

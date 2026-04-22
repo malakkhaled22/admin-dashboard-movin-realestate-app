@@ -1,0 +1,78 @@
+$primary: #4318ff;
+$bg-light: #f4f7fe;
+$text-main: #2b3674;
+$text-gray: #a3aed0;
+
+.auction-page {
+  padding: 30px;
+  background: #fdfdfd;
+
+  .page-header {
+    margin-bottom: 30px;
+    h1 { color: $text-main; font-size: 28px; font-weight: 700; margin-bottom: 5px; }
+    p { color: $text-gray; font-size: 14px; }
+  }
+}
+
+.filter-pills {
+  display: flex; gap: 10px; margin-bottom: 30px;
+  button {
+    border: none; padding: 10px 25px; border-radius: 12px;
+    background: #f4f7fe; color: #2b3674; font-weight: 600; cursor: pointer;
+    transition: 0.3s;
+    &.active { background: $primary; color: white; box-shadow: 0px 4px 14px rgba(67, 24, 255, 0.3); }
+  }
+}
+
+.table-card {
+  background: white; border-radius: 20px; padding: 20px;
+  box-shadow: 0px 4px 20px rgba(0,0,0,0.02);
+  min-height: 200px;
+
+  table {
+    width: 100%; border-collapse: collapse;
+    th { text-align: left; padding: 15px; color: $text-gray; font-size: 13px; border-bottom: 1px solid #f4f7fe; text-transform: uppercase; }
+    td { padding: 15px; border-bottom: 1px solid #f4f7fe; color: $text-main; font-weight: 500; }
+
+    .prop-col {
+      display: flex; align-items: center; gap: 12px;
+      .img-box {
+        width: 45px; height: 45px; border-radius: 10px; background: #eee; overflow: hidden;
+        img { width: 100%; height: 100%; object-fit: cover; }
+      }
+      span { font-weight: 700; text-transform: capitalize; }
+    }
+
+    .status-tag {
+      padding: 5px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase;
+      &.approved { background: #e6f9f4; color: #05cd99; }
+      &.pending { background: #fff8e6; color: #ffb400; }
+      &.rejected { background: #feebe9; color: #ee5d50; }
+    }
+
+    .btn-group {
+      display: flex; gap: 8px;
+      .approve-btn { background: $primary; color: white; border: none; padding: 8px 15px; border-radius: 10px; cursor: pointer; }
+      .reject-btn { background: transparent; color: #ee5d50; border: 1px solid #ee5d50; padding: 8px 15px; border-radius: 10px; cursor: pointer; }
+    }
+  }
+}
+
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px);
+  display: flex; justify-content: center; align-items: center; z-index: 1000;
+  .modal-box {
+    background: white; padding: 30px; border-radius: 20px; width: 400px;
+    h3 { color: $text-main; margin-bottom: 10px; }
+    p { color: $text-gray; font-size: 14px; }
+    textarea { width: 100%; height: 100px; margin: 15px 0; padding: 12px; border-radius: 10px; border: 1px solid #eee; outline: none; background: #f9f9f9; }
+    .modal-btns {
+      display: flex; justify-content: flex-end; gap: 10px;
+      button { padding: 10px 20px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600;
+        &.confirm { background: #ee5d50; color: white; }
+      }
+    }
+  }
+}
+
+.empty-state, .loading-text { text-align: center; padding: 40px; color: $text-gray; font-weight: 600; }

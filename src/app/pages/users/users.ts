@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 export class UsersComponent implements OnInit {
 
   users: any[] = [];
-  readonly API_URL = 'https://movin-app.vercel.app/api/admin/users';
+  readonly API_URL = 'https://movin-backend-production.up.railway.app/api/admin';
 
   constructor(private http: HttpClient) {}
 
@@ -21,23 +21,28 @@ export class UsersComponent implements OnInit {
   }
 
   fetchUsers() {
-    this.http.get<any>(`${this.API_URL}/all`).subscribe({
-      next: (res) => {
-        this.users = res.result.users;
-      },
-      error: (err) => console.error('Fetch users error', err)
-    });
-  }
+  this.http.get<any>(`${this.API_URL}/users/all`).subscribe({
+    next: (res) => {
 
+      this.users = res.users || res.result?.users || [];
+      console.log("Full Response from Server:", res);
+    },
+    error: (err) => console.error('Fetch error:', err)
+  });
+}
   toggleBlock(userId: string, isBlocked: boolean) {
     const action = isBlocked ? 'unblock' : 'block';
+    const url = `${this.API_URL}/users/${action}/${userId}`;
 
-    this.http.patch(`${this.API_URL}/${action}/${userId}`, {}).subscribe({
+    this.http.patch(url, {}).subscribe({
       next: () => {
         const user = this.users.find(u => u._id === userId);
-        if (user) user.isBlocked = !user.isBlocked;
+        if (user) {
+          user.isBlocked = !isBlocked;
+          alert(`User status updated to ${action}ed!`);
+        }
       },
-      error: (err) => console.error('Block/unblock error', err)
+      error: (err) => alert(err.error?.message || 'Error occurred')
     });
   }
 }

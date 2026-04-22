@@ -2,8 +2,6 @@
   <div class="page-container">
 
     <header class="shared-header" *ngIf="!isLoginPage()">
-
-      <!-- Search Box -->
       <div class="search-box">
         <div class="input-group">
           <input type="text" [(ngModel)]="searchQuery" (keyup.enter)="onGlobalSearch()"
@@ -49,15 +47,15 @@
         </div>
       </div>
 
-      <!-- Admin Profile -->
-      <div class="admin-profile">
-        <div class="info">
-          <span class="name">Admin User</span>
-          <span class="email">admin@movin.com</span>
-        </div>
-        <div class="avatar">A</div>
+  <div class="admin-profile-section" style="cursor: pointer;" routerLink="admin/profile">
+      <div class="admin-info">
+        <p class="admin-name">{{ adminData?.username || 'Admin User' }}</p>
+        <span class="admin-email">{{ adminData?.email || 'admin@movin.com' }}</span>
       </div>
-
+      <div class="avatar-circle">
+        {{ adminData?.username ? adminData.username[0].toUpperCase() : 'A' }}
+      </div>
+  </div>
     </header>
 
     <!-- Main content -->

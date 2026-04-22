@@ -1,8 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal, ChangeDetectorRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet, RouterLink } from '@angular/router';
 import { SidebarComponent } from './components/sidebar/sidebar';
 
 interface SearchResults {
@@ -13,13 +13,14 @@ interface SearchResults {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, SidebarComponent, FormsModule],
+  imports: [CommonModule, RouterOutlet, SidebarComponent, FormsModule, RouterLink],
   templateUrl: './app.html',
   styleUrls: ['./app.scss']
 })
-export class App {
+export class App implements OnInit {
   protected readonly title = signal('admin-dashboard');
 
+  adminData: any = null;
   searchQuery = '';
   searchResults: SearchResults = { users: [], properties: [] };
 
@@ -28,10 +29,33 @@ export class App {
 
   constructor(
     private http: HttpClient,
-    public router: Router
+    public router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
-  // ✅ نحدد هل إحنا في صفحة اللوجين
+  ngOnInit() {
+    if (!this.isLoginPage()) {
+      this.fetchAdminProfile();
+    }
+  }
+
+  // app.ts
+fetchAdminProfile() {
+  const token = localStorage.getItem('token');
+  if (!token) return;
+
+  const noCacheUrl = `https://movin-backend-production.up.railway.app/api/users/profile?t=${new Date().getTime()}`;
+
+  this.http.get<any>(noCacheUrl, {
+    headers: { Authorization: `Bearer ${token}` }
+  }).subscribe({
+    next: (res) => {
+      console.log("Header received fresh data:", res.user);
+      this.adminData = res.user;
+      this.cdr.detectChanges();
+    }
+  });
+}
   isLoginPage(): boolean {
     return this.router.url.includes('/login');
   }
@@ -44,7 +68,7 @@ export class App {
     }
 
     this.http.get(
-      `https://movin-app.vercel.app/api/admin/search?q=${query}`,
+      `https://movin-backend-production.up.railway.app/api/admin/search?q=${query}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token') || ''}`

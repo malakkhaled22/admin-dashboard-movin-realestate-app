@@ -1,0 +1,97 @@
+<div class="profile-container">
+  <div class="page-header">
+    <h1>Admin Profile</h1>
+    <p>Manage your personal information and view your dashboard stats</p>
+  </div>
+
+  <div class="profile-grid">
+    <div class="profile-card shadow-panel">
+      <div class="user-header">
+        <div class="avatar-large">
+          {{ adminData?.username ? adminData.username[0].toUpperCase() : 'A' }}
+        </div>
+        <div class="user-meta">
+          <h2>{{ adminData?.username }}</h2>
+          <span class="role-badge">Super Admin</span>
+        </div>
+      </div>
+
+      <div class="info-list">
+        <div class="info-item">
+          <label>Email Address</label>
+          <p>{{ adminData?.email }}</p>
+        </div>
+        <div class="info-item">
+          <label>Phone Number</label>
+          <p>{{ adminData?.phone || 'Not set' }}</p>
+        </div>
+        <div class="info-item">
+          <label>Location</label>
+          <p>{{ adminData?.location || 'Cairo, Egypt' }}</p>
+        </div>
+        <div class="info-item">
+          <label>Bio</label>
+          <p>{{ adminData?.bio || 'No bio added yet' }}</p>
+        </div>
+      </div>
+      <button class="edit-btn" (click)="openEditModal()">Edit Profile</button>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card shadow-panel">
+        <div class="icon-box blue"><i class="fas fa-users"></i></div>
+        <div class="stat-info">
+          <label>Total Users</label>
+          <h3>{{ stats?.totalUsers || 0 }}</h3>
+        </div>
+      </div>
+
+      <div class="stat-card shadow-panel">
+        <div class="icon-box green"><i class="fas fa-home"></i></div>
+        <div class="stat-info">
+          <label>Total Properties</label>
+          <h3>{{ stats?.totalProperties || 14 }}</h3>
+        </div>
+      </div>
+
+      <div class="stat-card shadow-panel">
+        <div class="icon-box orange"><i class="fas fa-check-circle"></i></div>
+        <div class="stat-info">
+          <label>Approved Auctions</label>
+          <h3>{{ stats?.approvedAuctions || 6 }}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" *ngIf="showEditModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Update Profile</h3>
+        <button class="close-icon" (click)="showEditModal = false">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="input-field">
+          <label>Username</label>
+          <input type="text" [(ngModel)]="editData.username">
+        </div>
+        <div class="input-field">
+          <label>Phone Number</label>
+          <input type="text" [(ngModel)]="editData.phone">
+        </div>
+        <div class="input-field">
+          <label>Location</label>
+          <input type="text" [(ngModel)]="editData.location">
+        </div>
+        <div class="input-field">
+          <label>Bio</label>
+          <textarea [(ngModel)]="editData.bio"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="showEditModal = false">Cancel</button>
+        <button class="btn-save" (click)="saveProfile()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>

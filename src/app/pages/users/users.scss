@@ -1,62 +1,47 @@
-.users-container {
-  padding: 10px;
+$primary: #4318ff;
+$text-main: #2b3674;
+$text-gray: #a3aed0;
+$bg-light: #f4f7fe;
 
-  .table-card {
-    background: white;
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0px 18px 40px rgba(112, 144, 176, 0.08);
-    margin-top: 20px;
+.users-container {
+  padding: 30px;
+  background: #fdfdfd;
+
+  .page-title-section {
+    margin-bottom: 30px;
+    h1 { color: $text-main; font-size: 28px; font-weight: 700; }
+    p { color: $text-gray; font-size: 14px; }
   }
+}
+
+.shadow-panel {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.02);
 }
 
 .admin-table {
   width: 100%;
   border-collapse: collapse;
 
-  th {
-    text-align: left;
-    padding: 15px;
-    color: #a3aed0;
-    font-size: 14px;
-    border-bottom: 1px solid #f4f7fe;
-  }
+  th { text-align: left; padding: 15px; color: $text-gray; font-size: 13px; border-bottom: 1px solid $bg-light; }
+  td { padding: 15px; border-bottom: 1px solid $bg-light; color: $text-main; font-weight: 600; }
 
-  td {
-    padding: 15px;
-    color: #2b3674;
-    font-weight: 600;
-    border-bottom: 1px solid #f4f7fe;
+  .user-info {
+    display: flex; align-items: center; gap: 12px;
+    .avatar-circle { width: 35px; height: 35px; background: rgba($primary, 0.1); color: $primary; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
   }
 
   .status-badge {
-    padding: 5px 12px;
-    border-radius: 10px;
-    font-size: 12px;
-
-    &.active {
-      background: #e6faf5;
-      color: #05cd99;
-    }
-
-    &.blocked {
-      background: #feeef2;
-      color: #ee5d50;
-    }
+    padding: 5px 12px; border-radius: 10px; font-size: 12px;
+    &.active { background: #e6faf5; color: #05cd99; }
+    &.blocked { background: #feeef2; color: #ee5d50; }
   }
 
   .action-btn {
-    background: #f4f7fe;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 10px;
-    color: #2b3674;
-    cursor: pointer;
-    font-weight: bold;
-
-    &:hover {
-      background: #ffb400;
-      color: white;
-    }
+    border: none; padding: 8px 15px; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.3s;
+    &.block-btn { background: #f4f7fe; color: #2b3674; &:hover { background: #ee5d50; color: white; } }
+    &.unblock-btn { background: #f4f7fe; color: #2b3674; &:hover { background: #05cd99; color: white; } }
   }
 }

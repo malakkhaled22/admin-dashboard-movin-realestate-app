@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { HttpClient} from '@angular/common/http';
+import { CommonModule, CurrencyPipe, TitleCasePipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-properties',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CurrencyPipe, TitleCasePipe],
   templateUrl: './properties.html',
   styleUrls: ['./properties.scss']
 })
 export class PropertiesComponent implements OnInit {
-
   properties: any[] = [];
   currentTab: 'pending' | 'approved' | 'rejected' | 'all' = 'pending';
-  readonly API_URL = 'https://movin-app.vercel.app/api/admin/properties';
+
+  readonly API_URL = 'https://movin-backend-production.up.railway.app/api/admin/properties';
 
   constructor(private http: HttpClient) {}
 
@@ -23,17 +23,15 @@ export class PropertiesComponent implements OnInit {
 
   fetchProperties(tab: 'pending' | 'approved' | 'rejected' | 'all') {
     this.currentTab = tab;
-
     let endpoint = (tab === 'pending') ? 'pending' : 'all';
 
     this.http.get<any>(`${this.API_URL}/${endpoint}`).subscribe({
       next: (res) => {
         const allProps: any[] = res.properties || [];
-
         if(tab === 'approved') this.properties = allProps.filter((p: any) => p.status === 'approved');
         else if(tab === 'rejected') this.properties = allProps.filter((p: any) => p.status === 'rejected');
         else if(tab === 'pending') this.properties = allProps.filter((p: any) => p.status === 'pending');
-        else this.properties = allProps; // all
+        else this.properties = allProps;
       },
       error: (err) => console.error('Fetch properties error', err)
     });
@@ -45,7 +43,7 @@ export class PropertiesComponent implements OnInit {
         this.properties = this.properties.filter((p: any) => p._id !== id);
         alert('Property approved successfully!');
       },
-      error: (err) => console.error('Approve error', err)
+      error: (err) => alert(err.error?.message || 'Error approving property')
     });
   }
 
@@ -55,8 +53,7 @@ export class PropertiesComponent implements OnInit {
         this.properties = this.properties.filter((p: any) => p._id !== id);
         alert('Property rejected successfully!');
       },
-      error: (err) => console.error('Reject error', err)
+      error: (err) => alert(err.error?.message || 'Error rejecting property')
     });
   }
-
 }

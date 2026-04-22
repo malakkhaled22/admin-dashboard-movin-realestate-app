@@ -8,7 +8,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(
-      withInterceptors([authInterceptor]) // الربط الأساسي هنا
+      withInterceptors([authInterceptor])
     )
   ]
 };

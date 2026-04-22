@@ -1,7 +1,7 @@
-/* --- Shared Header --- */
+
 .shared-header {
   display: flex;
-  justify-content: space-between; // يوزع العناصر (بحث في النص، بروفايل على اليمين)
+  justify-content: space-between;
   align-items: center;
   padding: 20px 30px;
   background: white;
@@ -10,17 +10,16 @@
   top: 0;
   z-index: 1000;
 
-  /* --- شريط البحث في المنتصف --- */
   .search-box {
     position: relative;
-    flex: 1; // يأخذ المساحة المتاحة
-    max-width: 650px; // تكبير عرض البحث
-    margin: 0 auto; // التوسيط في المنتصف تماماً
+    flex: 1;
+    max-width: 650px;
+    margin: 0 auto;
 
     .input-group {
       display: flex;
       align-items: center;
-      background: #f4f7fe; // لون خلفية هادئ للبحث
+      background: #f4f7fe;
       border-radius: 20px;
       padding: 8px 20px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
@@ -37,9 +36,9 @@
         border: none;
         background: transparent;
         padding: 12px;
-        width: 100%; // يأخذ عرض الـ container بالكامل
+        width: 100%;
         outline: none;
-        font-size: 16px; // تكبير الخط
+        font-size: 16px;
         color: #2b3674;
 
         &::placeholder {
@@ -56,18 +55,18 @@
       }
     }
 
-    /* --- قائمة نتائج البحث --- */
+
     .search-results-dropdown {
       position: absolute;
-      top: calc(100% + 10px); // تظهر تحت شريط البحث بمسافة بسيطة
+      top: calc(100% + 10px);
       left: 0;
-      right: 0; // تأخذ نفس عرض شريط البحث الجديد
+      right: 0;
       max-height: 450px;
       overflow-y: auto;
       background: white;
       border-radius: 20px;
       box-shadow: 0 20px 40px rgba(112, 144, 176, 0.15);
-      z-index: 1100;
+      z-index: 9999;
       border: 1px solid #f4f7fe;
 
       .results-header {
@@ -163,8 +162,6 @@
       }
     }
   }
-
-  /* --- بروفايل الأدمن --- */
   .admin-profile {
     display: flex;
     align-items: center;
@@ -190,7 +187,7 @@
     .avatar {
       width: 45px;
       height: 45px;
-      background: #11047a; // لون أغمق قليلاً للشياكة
+      background: #11047a;
       color: white;
       border-radius: 50%;
       display: flex;
@@ -210,7 +207,7 @@
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(4px); // تأثير تغبيش للخلفية
+  backdrop-filter: blur(4px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -242,5 +239,33 @@
     align-items: center;
     justify-content: center;
     color: #2b3674;
+  }
+}
+.shared-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+}
+
+.admin-profile-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  .admin-info {
+    text-align: right;
+    .admin-name { color: #2b3674; font-weight: 700; margin: 0; }
+    .admin-email { color: #a3aed0; font-size: 12px; }
+  }
+
+  .avatar-circle {
+    width: 40px; height: 40px;
+    background: #4318ff; color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
   }
 }

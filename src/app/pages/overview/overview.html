@@ -1,30 +1,31 @@
 <div class="overview-container">
   <div class="page-title-section">
-    <h2>Overview</h2>
-    <p>Monitor your platform's key metrics and performance</p>
+    <h2>Welcome back, {{ adminData?.username || 'Admin' }}!</h2>
+    <p>Monitor your platform's key metrics and performance at a glance.</p>
   </div>
 
   <div class="stats-grid">
 
     <div class="stat-card">
-      <div class="card-info">
-        <span class="label">Total Users</span>
-        <h2 class="value">{{ stats?.users?.total || 0 }}</h2>
-        <span class="trend up">{{ stats?.users?.buyers || 0 }} Buyers | {{ stats?.users?.sellers || 0 }} Sellers</span>
-      </div>
-      <div class="card-icon blue-bg">👥</div>
-    </div>
+  <div class="card-info">
+    <span class="label">Total Users</span>
+    <h2 class="value">{{ stats?.users?.total || 0 }}</h2>
+    <span class="trend up">
+      {{ stats?.users?.buyers || 0 }} Buyers | {{ stats?.users?.sellers || 0 }} Sellers
+    </span>
+  </div>
+  <div class="card-icon blue-bg">👥</div>
+</div>
 
-    <div class="stat-card">
-      <div class="card-info">
-        <span class="label">Pending Properties</span>
-        <h2 class="value">{{ stats?.properties?.pending || 0 }}</h2>
-        <span class="trend">Awaiting review</span>
-      </div>
-      <div class="card-icon orange-bg">⏳</div>
-    </div>
-
-    <div class="stat-card">
+<div class="stat-card">
+  <div class="card-info">
+    <span class="label">Pending Properties</span>
+    <h2 class="value">{{ stats?.properties?.pending || 0 }}</h2>
+    <span class="trend">Awaiting review</span>
+  </div>
+  <div class="card-icon orange-bg">⏳</div>
+</div>
+<div class="stat-card">
       <div class="card-info">
         <span class="label">Total Properties</span>
         <h2 class="value">{{ stats?.properties?.total || 0 }}</h2>
@@ -33,14 +34,15 @@
       <div class="card-icon yellow-bg">🏢</div>
     </div>
 
-    <div class="stat-card">
-      <div class="card-info">
-        <span class="label">Approved Properties</span>
-        <h2 class="value">{{ stats?.properties?.approved || 0 }}</h2>
-        <span class="trend green">Live on platform</span>
-      </div>
-      <div class="card-icon green-bg">✅</div>
-    </div>
+<div class="stat-card">
+  <div class="card-info">
+    <span class="label">Approved Properties</span>
+    <h2 class="value">{{ stats?.properties?.approved || 0 }}</h2>
+    <span class="trend green">Live on platform</span>
+  </div>
+  <div class="card-icon green-bg">✅</div>
+</div>
+
 
     <div class="stat-card">
       <div class="card-info">
@@ -54,7 +56,7 @@
     <div class="stat-card">
       <div class="card-info">
         <span class="label">Active Reports</span>
-        <h2 class="value">8</h2>
+        <h2 class="value">{{ stats?.Reports?.total }}</h2>
         <span class="trend warning">Pending resolution</span>
       </div>
       <div class="card-icon pink-bg">⚠️</div>

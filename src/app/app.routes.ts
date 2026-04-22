@@ -9,6 +9,8 @@ import { AdminLayout } from './layout/admin-layout';
 import { LoginComponent } from './components/login/login';
 
 import { AuthGuard } from './guards/auth.guard';
+import { AuctionsComponent } from './pages/auctions/auctions';
+import { ProfileComponent } from './pages/profile/profile';
 
 export const routes: Routes = [
 
@@ -25,6 +27,8 @@ export const routes: Routes = [
       { path: 'users', component: UsersComponent },
       { path: 'properties', component: PropertiesComponent },
       { path: 'reports', component: ReportsComponent },
+      { path: 'auctions', component: AuctionsComponent },
+      { path: 'admin/profile', component: ProfileComponent },
       { path: '', redirectTo: 'overview', pathMatch: 'full' },
     ],
   },

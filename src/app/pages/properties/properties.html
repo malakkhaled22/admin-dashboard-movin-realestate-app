@@ -1,19 +1,17 @@
 <div class="properties-container">
   <div class="page-title-section">
-    <h2>Property Approvals</h2>
+    <h1>Property Approvals</h1>
     <p>Review and manage property listings waiting for approval</p>
   </div>
 
-  <!-- Tabs -->
-  <div class="tab-buttons">
+  <div class="tab-pills">
     <button [class.active]="currentTab==='pending'" (click)="fetchProperties('pending')">Pending</button>
     <button [class.active]="currentTab==='approved'" (click)="fetchProperties('approved')">Approved</button>
     <button [class.active]="currentTab==='rejected'" (click)="fetchProperties('rejected')">Rejected</button>
     <button [class.active]="currentTab==='all'" (click)="fetchProperties('all')">All</button>
   </div>
 
-  <!-- Table -->
-  <div class="table-card">
+  <div class="table-card shadow-panel">
     <table class="admin-table">
       <thead>
         <tr>
@@ -22,25 +20,31 @@
           <th>Price</th>
           <th>Location</th>
           <th>Status</th>
-          <th>Actions</th>
+          <th *ngIf="currentTab==='pending'">Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let prop of properties">
           <td>
             <div class="prop-cell">
-              <img [src]="prop.images?.[0] || 'assets/placeholder.jpg'" class="prop-thumb">
-              <span class="prop-title">{{ prop.title || prop.type || 'No Title' }}</span>
+              <div class="img-wrapper">
+                <img [src]="prop.images?.[0]?.url || 'assets/placeholder.jpg'" class="prop-thumb">
+              </div>
+              <span class="prop-title">{{ prop.type | titlecase }}</span>
             </div>
           </td>
-          <td>{{ prop.seller?.username || 'Unknown' }}</td>
-          <td>{{ prop.price || 0 | currency:'EGP ' }}</td>
+          <td>{{ prop.seller ? prop.seller.username : 'Unknown' }}</td>
+          <td class="price-val">{{ prop.price | currency:'EGP ' }}</td>
           <td>{{ prop.location || '-' }}</td>
-          <td>{{ prop.status || '-' }}</td>
           <td>
+            <span class="status-badge" [ngClass]="prop.status">
+              {{ prop.status }}
+            </span>
+          </td>
+          <td *ngIf="currentTab==='pending'">
             <div class="action-btns">
-              <button *ngIf="prop.status==='pending'" class="approve-btn" (click)="approve(prop._id)">Approve</button>
-              <button *ngIf="prop.status==='pending'" class="reject-btn" (click)="reject(prop._id)">Reject</button>
+              <button class="approve-btn" (click)="approve(prop._id)">Approve</button>
+              <button class="reject-btn" (click)="reject(prop._id)">Reject</button>
             </div>
           </td>
         </tr>
@@ -48,7 +52,7 @@
     </table>
 
     <div *ngIf="properties.length === 0" class="empty-state">
-      <p>No properties in this category.</p>
+      <p>No properties found in this category.</p>
     </div>
   </div>
 </div>
