@@ -22,7 +22,7 @@ export class LoginComponent {
 
   onLogin() {
     this.http.post(
-      'https://movin-app.vercel.app/api/auth/login',
+      'https://movin-backend-production.up.railway.app/api/auth/login',
       this.loginData
     ).subscribe({
       next: (res: any) => {
