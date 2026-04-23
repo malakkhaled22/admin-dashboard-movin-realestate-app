@@ -61,22 +61,49 @@
   </div>
 
   <div class="modal-overlay" *ngIf="selectedReport">
-    <div class="modal-box">
-      <div class="modal-header">
-        <h3>Report Details</h3>
-        <button class="close-icon" (click)="closeDetails()">&times;</button>
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Report Details</h3>
+      <button class="close-icon" (click)="closeDetails()">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="section-title">Reporter Information</div>
+      <div class="info-item"><strong>Name:</strong> {{ selectedReport.reportedBy?.username }}</div>
+      <div class="info-item"><strong>Email:</strong> {{ selectedReport.reportedBy?.email }}</div>
+
+      <hr>
+
+      <div class="section-title">Reported {{ selectedReport.targetType }}</div>
+
+      <div *ngIf="selectedReport.targetType === 'User' || selectedReport.targetType === 'user'">
+        <div class="info-item"><strong>Target Username:</strong> {{ selectedReport.targetId?.username }}</div>
+        <div class="info-item"><strong>Target Email:</strong> {{ selectedReport.targetId?.email }}</div>
       </div>
-      <div class="modal-body">
-        <div class="info-item"><strong>Reporter:</strong> {{ selectedReport.reportedBy?.username }}</div>
-        <div class="info-item"><strong>Email:</strong> {{ selectedReport.reportedBy?.email }}</div>
-        <div class="info-item"><strong>Target Type:</strong> {{ selectedReport.targetType }}</div>
-        <div class="info-item"><strong>Subject:</strong> {{ selectedReport.subject }}</div>
-        <div class="info-item message-box"><strong>Message:</strong> <p>{{ selectedReport.message }}</p></div>
-        <div class="info-item"><strong>Created At:</strong> {{ selectedReport.createdAt | date:'full' }}</div>
+
+      <div *ngIf="selectedReport.targetType === 'Property' || selectedReport.targetType === 'property'">
+        <div class="info-item"><strong>Property Type:</strong> {{ selectedReport.targetId?.type }}</div>
+        <div class="info-item"><strong>Location:</strong> {{ selectedReport.targetId?.location }}</div>
+        </div>
+
+      <hr>
+
+      <div class="section-title">Complaint Content</div>
+      <div class="info-item"><strong>Subject:</strong> {{ selectedReport.subject }}</div>
+      <div class="info-item message-box">
+        <strong>Message:</strong>
+        <p>{{ selectedReport.message }}</p>
       </div>
-      <div class="modal-footer">
-        <button class="btn-close-modal" (click)="closeDetails()">Close</button>
+      <div class="info-item"><strong>Status:</strong>
+        <span class="status-badge" [ngClass]="selectedReport.status">{{ selectedReport.status }}</span>
       </div>
     </div>
+
+    <div class="modal-footer">
+      <button class="btn-close-modal" (click)="closeDetails()">Close</button>
+      <button *ngIf="selectedReport.status === 'pending'" class="btn-resolve-main"
+              (click)="resolveReport(selectedReport._id)">Mark as Resolved</button>
+    </div>
   </div>
+</div>
 </div>

@@ -2,6 +2,9 @@ $primary: #4318ff;
 $text-main: #2b3674;
 $text-gray: #a3aed0;
 $bg-light: #f4f7fe;
+$success: #05cd99;
+$danger: #ee5d50;
+$warning: #ffb400;
 
 .reports-container {
   padding: 30px;
@@ -30,33 +33,62 @@ $bg-light: #f4f7fe;
     .details { display: flex; flex-direction: column; .name { font-weight: bold; } .email { font-size: 11px; color: $text-gray; } }
   }
 
-  .subject-info {
-    .msg-preview { color: $text-gray; font-size: 12px; margin: 0; }
-  }
+  .subject-info { .msg-preview { color: $text-gray; font-size: 12px; margin: 0; } }
 
   .status-badge {
     padding: 5px 12px; border-radius: 10px; font-size: 11px; font-weight: bold; text-transform: uppercase;
-    &.pending { background: #fff8e6; color: #ffb400; }
-    &.resolved { background: #e6f9f4; color: #05cd99; }
+    &.pending { background: rgba($warning, 0.1); color: $warning; }
+    &.resolved { background: rgba($success, 0.1); color: $success; }
   }
 
   .action-buttons {
     display: flex; gap: 8px;
-    button { padding: 8px 15px; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; }
-    .btn-view { background: $bg-light; color: $text-main; }
-    .btn-resolve { background: #05cd99; color: white; }
+    button { padding: 8px 15px; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+    .btn-view { background: $bg-light; color: $text-main; &:hover { background: darken($bg-light, 5%); } }
+    .btn-resolve { background: $success; color: white; &:hover { background: darken($success, 5%); } }
   }
 }
 
-// Modal Style
+// Modal Style Mapped to Your Logic
 .modal-overlay {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4);
-  display: flex; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(4px);
+  display: flex; justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(4px);
 
   .modal-box {
-    background: white; border-radius: 20px; width: 450px; padding: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-    .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid $bg-light; padding-bottom: 15px; h3 { color: $text-main; margin: 0; } .close-icon { background: none; border: none; font-size: 24px; cursor: pointer; } }
-    .modal-body { padding: 20px 0; .info-item { margin-bottom: 10px; font-size: 14px; strong { color: $text-gray; } } .message-box { background: $bg-light; padding: 10px; border-radius: 10px; p { margin: 5px 0 0 0; font-style: italic; } } }
-    .modal-footer { display: flex; justify-content: flex-end; .btn-close-modal { background: $primary; color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; } }
+    background: white; border-radius: 20px; width: 500px; max-height: 90vh; overflow-y: auto; padding: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+
+    .modal-header {
+      display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid $bg-light; padding-bottom: 15px;
+      h3 { color: $text-main; margin: 0; }
+      .close-icon { background: none; border: none; font-size: 24px; cursor: pointer; color: $text-gray; }
+    }
+
+    .modal-body {
+      padding: 20px 0;
+
+      .section-title {
+        font-size: 12px; text-transform: uppercase; color: $primary; font-weight: 800;
+        letter-spacing: 1px; margin: 15px 0 10px 0;
+      }
+
+      hr { border: 0; border-top: 1px solid $bg-light; margin: 15px 0; }
+
+      .info-item {
+        margin-bottom: 8px; font-size: 14px; color: $text-main;
+        strong { color: $text-gray; margin-right: 5px; font-weight: 500; }
+      }
+
+      .message-box {
+        background: $bg-light; padding: 15px; border-radius: 12px; margin-top: 5px;
+        p { margin: 5px 0 0 0; color: $text-main; line-height: 1.5; font-style: normal; }
+      }
+    }
+
+    .modal-footer {
+      display: flex; gap: 10px; justify-content: flex-end; border-top: 1px solid $bg-light; padding-top: 15px;
+      button { padding: 10px 20px; border: none; border-radius: 12px; cursor: pointer; font-weight: 700; transition: 0.2s; }
+      .btn-close-modal { background: $bg-light; color: $text-main; }
+      .btn-resolve-main { background: $success; color: white; &:hover { background: darken($success, 5%); } }
+    }
   }
 }
