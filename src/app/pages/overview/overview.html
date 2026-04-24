@@ -81,11 +81,10 @@
     <div class="activity-card shadow-panel">
       <div class="card-header">
         <h3>Recent Activity</h3>
-        <button class="view-all">See all</button>
       </div>
 
       <div class="activity-list">
-        <div class="activity-item" *ngFor="let act of activities">
+        <div class="activity-item" *ngFor="let act of activities.slice(0, 10)">
           <div class="activity-icon" [ngClass]="getIconClass(act.type)">
             {{ getEmoji(act.type) }}
           </div>

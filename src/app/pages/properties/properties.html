@@ -5,10 +5,10 @@
   </div>
 
   <div class="tab-pills">
-    <button [class.active]="currentTab==='pending'" (click)="fetchProperties('pending')">Pending</button>
-    <button [class.active]="currentTab==='approved'" (click)="fetchProperties('approved')">Approved</button>
-    <button [class.active]="currentTab==='rejected'" (click)="fetchProperties('rejected')">Rejected</button>
-    <button [class.active]="currentTab==='all'" (click)="fetchProperties('all')">All</button>
+    <button [class.active]="currentTab==='pending'" (click)="fetchProperties('pending', 1)">Pending</button>
+    <button [class.active]="currentTab==='approved'" (click)="fetchProperties('approved', 1)">Approved</button>
+    <button [class.active]="currentTab==='rejected'" (click)="fetchProperties('rejected', 1)">Rejected</button>
+    <button [class.active]="currentTab==='all'" (click)="fetchProperties('all', 1)">All</button>
   </div>
 
   <div class="table-card shadow-panel">
@@ -50,6 +50,20 @@
         </tr>
       </tbody>
     </table>
+
+    <div class="pagination-section" *ngIf="totalPages > 1">
+      <button class="page-nav" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Prev</button>
+
+      <div class="page-numbers">
+        <button *ngFor="let page of getPagesArray()"
+                [class.active]="page === currentPage"
+                (click)="goToPage(page)">
+          {{ page }}
+        </button>
+      </div>
+
+      <button class="page-nav" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
+    </div>
 
     <div *ngIf="properties.length === 0" class="empty-state">
       <p>No properties found in this category.</p>

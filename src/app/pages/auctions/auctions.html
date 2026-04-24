@@ -10,7 +10,7 @@
     <button (click)="setTab('rejected')" [class.active]="currentTab === 'rejected'">Rejected</button>
   </div>
 
-  <div class="table-card">
+  <div class="table-card shadow-panel">
     <div *ngIf="loading" class="loading-text">Loading data...</div>
 
     <table *ngIf="!loading">
@@ -18,7 +18,7 @@
         <tr>
           <th>Property</th>
           <th>Owner</th>
-          <th>Price</th>
+          <th>Start Price</th>
           <th>End Date</th>
           <th>Status</th>
           <th *ngIf="currentTab === 'pending'">Actions</th>
@@ -28,26 +28,18 @@
         <tr *ngFor="let item of auctions">
           <td class="prop-col">
             <div class="img-box">
-              <img *ngIf="item.images && item.images.length > 0"
-                  [src]="item.images[0].url"
-                  alt="Property Image">
-              <div *ngIf="!item.images || item.images.length === 0" class="no-img">No Img</div>
+              <img [src]="item.images?.[0]?.url || 'assets/placeholder.jpg'" alt="Property Image">
             </div>
             <span>{{ item.type | titlecase }}</span>
           </td>
-
-          <td>{{ item.seller ? item.seller.username : 'No Seller' }}</td>
-
+          <td>{{ item.seller?.username || 'No Seller' }}</td>
           <td class="price-text">{{ item.auction?.startPrice | currency:'EGP ' }}</td>
-
           <td>{{ item.auction?.endTime | date:'medium' }}</td>
-
           <td>
             <span class="status-tag" [ngClass]="item.auction?.status">
               {{ item.auction?.status }}
             </span>
           </td>
-
           <td *ngIf="currentTab === 'pending'">
             <div class="btn-group">
               <button class="approve-btn" (click)="onApprove(item._id)">Approve</button>
@@ -57,6 +49,30 @@
         </tr>
       </tbody>
     </table>
+
+    <div class="pagination-section" *ngIf="!loading && auctions.length > 0">
+
+  <button class="page-nav"
+          (click)="goToPage(currentPage - 1)"
+          [disabled]="currentPage === 1">
+    Prev
+  </button>
+
+  <div class="page-numbers">
+    <button *ngFor="let page of getPagesArray()"
+            [class.active]="page === currentPage"
+            (click)="goToPage(page)">
+      {{ page }}
+    </button>
+  </div>
+
+  <button class="page-nav"
+          (click)="goToPage(currentPage + 1)"
+          [disabled]="currentPage === totalPages">
+    Next
+  </button>
+
+</div>
 
     <div *ngIf="!loading && auctions.length === 0" class="empty-state">
       No auction requests found in this category.
@@ -70,7 +86,7 @@
     <p>Please specify why this auction is being rejected:</p>
     <textarea [(ngModel)]="rejectReason" placeholder="Rejection reason..."></textarea>
     <div class="modal-btns">
-      <button (click)="showRejectModal = false">Cancel</button>
+      <button class="btn-cancel" (click)="showRejectModal = false">Cancel</button>
       <button class="confirm" (click)="confirmReject()">Confirm Reject</button>
     </div>
   </div>

@@ -22,19 +22,14 @@
               <span class="user-name">{{ user.username }}</span>
             </div>
           </td>
-
           <td class="email-cell">{{ user.email }}</td>
-
           <td>
             <span class="status-badge" [class.active]="!user.isBlocked" [class.blocked]="user.isBlocked">
               {{ user.isBlocked ? 'Blocked' : 'Active' }}
             </span>
           </td>
-
           <td>
-            <button class="action-btn"
-                    [ngClass]="user.isBlocked ? 'unblock-btn' : 'block-btn'"
-                    (click)="toggleBlock(user._id, user.isBlocked)">
+            <button class="action-btn" [ngClass]="user.isBlocked ? 'unblock-btn' : 'block-btn'" (click)="toggleBlock(user._id, user.isBlocked)">
               {{ user.isBlocked ? 'Unblock' : 'Block' }}
             </button>
           </td>
@@ -42,8 +37,22 @@
       </tbody>
     </table>
 
+    <div class="pagination-section" *ngIf="totalPages > 1">
+      <button class="page-nav" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Prev</button>
+
+      <div class="page-numbers">
+        <button *ngFor="let page of getPagesArray()"
+                [class.active]="page === currentPage"
+                (click)="goToPage(page)">
+          {{ page }}
+        </button>
+      </div>
+
+      <button class="page-nav" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
+    </div>
+
     <div *ngIf="users.length === 0" class="loading-state">
-      <p>Fetching users...</p>
+      <p>No users found for this page.</p>
     </div>
   </div>
 </div>

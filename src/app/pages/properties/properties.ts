@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, CurrencyPipe, TitleCasePipe } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-properties',
@@ -11,47 +11,69 @@ import { HttpClient } from '@angular/common/http';
 })
 export class PropertiesComponent implements OnInit {
   properties: any[] = [];
-  currentTab: 'pending' | 'approved' | 'rejected' | 'all' = 'pending';
+  currentTab: string = 'pending';
+  currentPage: number = 1;
+  totalPages: number = 1;
+  limit: number = 10;
 
   readonly API_URL = 'https://movin-backend-production.up.railway.app/api/admin/properties';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
-    this.fetchProperties(this.currentTab);
+    this.fetchProperties(this.currentTab, 1);
   }
 
-  fetchProperties(tab: 'pending' | 'approved' | 'rejected' | 'all') {
-    this.currentTab = tab;
-    let endpoint = (tab === 'pending') ? 'pending' : 'all';
+  private getHeaders() {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
 
-    this.http.get<any>(`${this.API_URL}/${endpoint}`).subscribe({
+  fetchProperties(tab: string, page: number = 1) {
+    this.currentTab = tab;
+    this.currentPage = page;
+    const statusParam = tab === 'all' ? '' : `&status=${tab}`;
+    const url = `${this.API_URL}/all?page=${page}&limit=${this.limit}${statusParam}`;
+
+    this.http.get<any>(url, { headers: this.getHeaders() }).subscribe({
       next: (res) => {
-        const allProps: any[] = res.properties || [];
-        if(tab === 'approved') this.properties = allProps.filter((p: any) => p.status === 'approved');
-        else if(tab === 'rejected') this.properties = allProps.filter((p: any) => p.status === 'rejected');
-        else if(tab === 'pending') this.properties = allProps.filter((p: any) => p.status === 'pending');
-        else this.properties = allProps;
+        this.properties = res.properties || res.result?.properties || [];
+        this.totalPages = res.totalPages || res.result?.totalPages || 1;
+        this.cdr.detectChanges();
       },
-      error: (err) => console.error('Fetch properties error', err)
+      error: (err) => {
+        console.error('Fetch properties error', err);
+        this.properties = [];
+        this.cdr.detectChanges();
+      }
     });
   }
 
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.fetchProperties(this.currentTab, page);
+    }
+  }
+
+  getPagesArray() {
+    return Array(this.totalPages).fill(0).map((x, i) => i + 1);
+  }
+
   approve(id: string) {
-    this.http.put(`${this.API_URL}/approve/${id}`, {}).subscribe({
+    this.http.put(`${this.API_URL}/approve/${id}`, {}, { headers: this.getHeaders() }).subscribe({
       next: () => {
-        this.properties = this.properties.filter((p: any) => p._id !== id);
-        alert('Property approved successfully!');
+        alert('Property approved successfully! ✅');
+        this.fetchProperties(this.currentTab, this.currentPage);
       },
       error: (err) => alert(err.error?.message || 'Error approving property')
     });
   }
 
   reject(id: string) {
-    this.http.put(`${this.API_URL}/reject/${id}`, {}).subscribe({
+    this.http.put(`${this.API_URL}/reject/${id}`, {}, { headers: this.getHeaders() }).subscribe({
       next: () => {
-        this.properties = this.properties.filter((p: any) => p._id !== id);
-        alert('Property rejected successfully!');
+        alert('Property rejected successfully! 🚫');
+        this.fetchProperties(this.currentTab, this.currentPage);
       },
       error: (err) => alert(err.error?.message || 'Error rejecting property')
     });
