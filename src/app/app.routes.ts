@@ -13,13 +13,13 @@ import { AuctionsComponent } from './pages/auctions/auctions';
 import { ProfileComponent } from './pages/profile/profile';
 
 export const routes: Routes = [
-
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
     path: 'login',
     component: LoginComponent
   },
   {
-    path: '',
+    path: 'admin',
     component: AdminLayout,
     canActivate: [AuthGuard],
     children: [
@@ -29,7 +29,6 @@ export const routes: Routes = [
       { path: 'reports', component: ReportsComponent },
       { path: 'auctions', component: AuctionsComponent },
       { path: 'admin/profile', component: ProfileComponent },
-      { path: '', redirectTo: 'login', pathMatch: 'full' },
     ],
   },
   { path: '**', redirectTo: 'login' }
