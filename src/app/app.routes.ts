@@ -29,7 +29,7 @@ export const routes: Routes = [
       { path: 'reports', component: ReportsComponent },
       { path: 'auctions', component: AuctionsComponent },
       { path: 'admin/profile', component: ProfileComponent },
-      { path: '', redirectTo: 'overview', pathMatch: 'full' },
+      { path: '', redirectTo: 'login', pathMatch: 'full' },
     ],
   },
   { path: '**', redirectTo: 'login' }

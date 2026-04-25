@@ -39,7 +39,6 @@ export class App implements OnInit {
     }
   }
 
-  // app.ts
 fetchAdminProfile() {
   const token = localStorage.getItem('token');
   if (!token) return;
