@@ -16,7 +16,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(authReq).pipe(
     catchError((error) => {
-      if (error instanceof HttpErrorResponse && error.status === 401) {
+      if (error instanceof HttpErrorResponse && error.status === 401 || error.status === 403) {
         const refreshToken = localStorage.getItem('refreshToken');
 
         if (refreshToken) {
@@ -32,7 +32,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
                 return next(newAuthReq);
               }),
               catchError((refreshErr) => {
-                
+
                 localStorage.clear();
                 window.location.href = '/login';
                 return throwError(() => refreshErr);
