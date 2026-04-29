@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import Chart from 'chart.js/auto';
 
@@ -24,15 +24,33 @@ export class OverviewComponent implements OnInit {
   }
 
   fetchActivities() {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    this.http.get<any>('https://movin-backend-production.up.railway.app/api/admin/activities', { headers }).subscribe({
+    this.http.get<any>('https://movin-backend-production.up.railway.app/api/admin/activities').subscribe({
       next: (res) => {
         this.activities = res.activities || [];
         this.cdr.detectChanges();
       },
       error: (err) => console.error("Activities Error:", err)
+    });
+  }
+
+  fetchStats() {
+    this.http.get<any>('https://movin-backend-production.up.railway.app/api/admin/stats').subscribe({
+      next: (res) => {
+        this.stats = res;
+        this.cdr.detectChanges();
+        setTimeout(() => this.createCharts(), 100);
+      },
+      error: (err) => console.error("Stats Error:", err)
+    });
+  }
+
+  fetchAdminInfo() {
+    this.http.get<any>('https://movin-backend-production.up.railway.app/api/users/profile').subscribe({
+      next: (res) => {
+        this.adminData = res.user;
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error("Admin Info Error:", err)
     });
   }
 
@@ -54,33 +72,6 @@ export class OverviewComponent implements OnInit {
       case 'block': return '🚫';
       default: return '🔔';
     }
-  }
-
-  fetchStats() {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    this.http.get<any>('https://movin-backend-production.up.railway.app/api/admin/stats', { headers }).subscribe({
-      next: (res) => {
-        this.stats = res;
-        this.cdr.detectChanges();
-        setTimeout(() => this.createCharts(), 100);
-      },
-      error: (err) => console.error("Stats Error:", err)
-    });
-  }
-
-  fetchAdminInfo() {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    this.http.get<any>('https://movin-backend-production.up.railway.app/api/users/profile', { headers }).subscribe({
-      next: (res) => {
-        this.adminData = res.user;
-        this.cdr.detectChanges();
-      },
-      error: (err) => console.error("Admin Info Error:", err)
-    });
   }
 
   createCharts() {

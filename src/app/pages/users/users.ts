@@ -1,5 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core'; // ✅ إضافة ChangeDetectorRef
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { HttpClient } from '@angular/common/http'; // تم حذف HttpHeaders اليدوية
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -27,10 +27,7 @@ export class UsersComponent implements OnInit {
   }
 
   fetchUsers(page: number) {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    this.http.get<any>(`${this.API_URL}/users/all?page=${page}&limit=${this.limit}`, { headers }).subscribe({
+    this.http.get<any>(`${this.API_URL}/users/all?page=${page}&limit=${this.limit}`).subscribe({
       next: (res) => {
         console.log("Full Server Response:", res);
         this.users = res.users || res.result?.users || [];
@@ -59,10 +56,8 @@ export class UsersComponent implements OnInit {
   toggleBlock(userId: string, isBlocked: boolean) {
     const action = isBlocked ? 'unblock' : 'block';
     const url = `${this.API_URL}/users/${action}/${userId}`;
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    this.http.patch(url, {}, { headers }).subscribe({
+    this.http.patch(url, {}).subscribe({
       next: () => {
         const user = this.users.find(u => u._id === userId);
         if (user) {

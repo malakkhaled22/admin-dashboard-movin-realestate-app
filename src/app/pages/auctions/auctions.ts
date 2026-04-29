@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, CurrencyPipe, DatePipe, TitleCasePipe } from '@angular/common';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http'; // تم حذف HttpHeaders اليدوية
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -31,11 +31,6 @@ export class AuctionsComponent implements OnInit {
     this.fetchAuctions(this.currentTab, 1);
   }
 
-  private getHeaders() {
-    const token = localStorage.getItem('token');
-    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
-  }
-
   setTab(tab: string) {
     this.currentTab = tab;
     this.fetchAuctions(tab, 1);
@@ -47,7 +42,7 @@ export class AuctionsComponent implements OnInit {
 
     const url = `${this.baseUrl}/${tab}?page=${page}&limit=${this.limit}`;
 
-    this.http.get<any>(url, { headers: this.getHeaders() }).subscribe({
+    this.http.get<any>(url).subscribe({
       next: (res) => {
         this.auctions = res.auctions || res.result?.auctions || [];
         this.totalPages = res.totalPages || res.result?.totalPages || 1;
@@ -73,7 +68,7 @@ export class AuctionsComponent implements OnInit {
   }
 
   onApprove(id: string) {
-    this.http.put(`${this.baseUrl}/${id}/approve`, {}, { headers: this.getHeaders() }).subscribe({
+    this.http.put(`${this.baseUrl}/${id}/approve`, {}).subscribe({
       next: () => {
         alert('Auction Approved successfully! ✅');
         this.fetchAuctions(this.currentTab, this.currentPage);
@@ -92,8 +87,7 @@ export class AuctionsComponent implements OnInit {
     if (!this.rejectReason.trim()) return alert('Please provide a reason');
 
     this.http.put(`${this.baseUrl}/${this.selectedId}/reject`,
-      { reason: this.rejectReason },
-      { headers: this.getHeaders() }
+      { reason: this.rejectReason }
     ).subscribe({
       next: () => {
         alert('Auction rejected! 🚫');

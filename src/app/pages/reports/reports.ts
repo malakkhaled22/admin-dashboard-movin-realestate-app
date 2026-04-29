@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http'; // تم حذف HttpHeaders اليدوية
 import { CommonModule, DatePipe, SlicePipe } from '@angular/common';
 
 @Component({
@@ -21,13 +21,8 @@ export class ReportsComponent implements OnInit {
     this.fetchReports();
   }
 
-  private getHeaders() {
-    const token = localStorage.getItem('token');
-    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
-  }
-
   fetchReports() {
-    this.http.get<any>(`${this.API_URL}/all`, { headers: this.getHeaders() }).subscribe({
+    this.http.get<any>(`${this.API_URL}/all`).subscribe({
       next: (res) => {
         this.reports = res.reports || [];
         this.cdr.detectChanges();
@@ -37,7 +32,7 @@ export class ReportsComponent implements OnInit {
   }
 
   resolveReport(id: string) {
-    this.http.patch(`${this.API_URL}/${id}`, { status: 'resolved' }, { headers: this.getHeaders() })
+    this.http.patch(`${this.API_URL}/${id}`, { status: 'resolved' })
       .subscribe({
         next: () => {
           alert('Report resolved successfully! ✅');

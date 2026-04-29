@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, CurrencyPipe, TitleCasePipe } from '@angular/common';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-properties',
@@ -24,10 +24,6 @@ export class PropertiesComponent implements OnInit {
     this.fetchProperties(this.currentTab, 1);
   }
 
-  private getHeaders() {
-    const token = localStorage.getItem('token');
-    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
-  }
 
   fetchProperties(tab: string, page: number = 1) {
     this.currentTab = tab;
@@ -35,7 +31,7 @@ export class PropertiesComponent implements OnInit {
     const statusParam = tab === 'all' ? '' : `&status=${tab}`;
     const url = `${this.API_URL}/all?page=${page}&limit=${this.limit}${statusParam}`;
 
-    this.http.get<any>(url, { headers: this.getHeaders() }).subscribe({
+    this.http.get<any>(url).subscribe({
       next: (res) => {
         this.properties = res.properties || res.result?.properties || [];
         this.totalPages = res.totalPages || res.result?.totalPages || 1;
@@ -60,7 +56,7 @@ export class PropertiesComponent implements OnInit {
   }
 
   approve(id: string) {
-    this.http.put(`${this.API_URL}/approve/${id}`, {}, { headers: this.getHeaders() }).subscribe({
+    this.http.put(`${this.API_URL}/approve/${id}`, {}).subscribe({
       next: () => {
         alert('Property approved successfully! ✅');
         this.fetchProperties(this.currentTab, this.currentPage);
@@ -70,7 +66,8 @@ export class PropertiesComponent implements OnInit {
   }
 
   reject(id: string) {
-    this.http.put(`${this.API_URL}/reject/${id}`, {}, { headers: this.getHeaders() }).subscribe({
+
+    this.http.put(`${this.API_URL}/reject/${id}`, {}).subscribe({
       next: () => {
         alert('Property rejected successfully! 🚫');
         this.fetchProperties(this.currentTab, this.currentPage);

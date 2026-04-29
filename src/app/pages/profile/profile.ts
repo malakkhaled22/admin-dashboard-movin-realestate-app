@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-profile',
@@ -25,16 +25,12 @@ export class ProfileComponent implements OnInit {
   }
 
   getAdminProfile() {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-    // استخدام Timestamp لمنع الكاش وجلب أحدث بيانات
     const url = `${this.API_URL}/profile?t=${new Date().getTime()}`;
 
-    this.http.get<any>(url, { headers }).subscribe({
+    this.http.get<any>(url).subscribe({
       next: (res) => {
         this.adminData = res.user;
-        this.stats = res.stats; // تخزين الإحصائيات من الريسبونس
+        this.stats = res.stats;
         this.editData = { ...res.user };
         this.cdr.detectChanges();
       },
@@ -48,11 +44,8 @@ export class ProfileComponent implements OnInit {
   }
 
   saveProfile() {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     const updateUrl = `${this.API_URL}/profile`;
 
-    // إرسال الحقول المطلوبة فقط لتجنب أخطاء الباك-أند
     const dataToUpdate = {
       username: this.editData.username,
       phone: this.editData.phone,
@@ -60,14 +53,13 @@ export class ProfileComponent implements OnInit {
       bio: this.editData.bio
     };
 
-    this.http.put(updateUrl, dataToUpdate, { headers }).subscribe({
+    this.http.put(updateUrl, dataToUpdate).subscribe({
       next: (res: any) => {
         alert('Profile updated successfully! ✅');
         this.adminData = res.user;
         this.showEditModal = false;
         this.cdr.detectChanges();
 
-        // إعادة تحميل بسيطة لتحديث الاسم في الهيدر والداشبورد
         window.location.reload();
       },
       error: (err) => {
