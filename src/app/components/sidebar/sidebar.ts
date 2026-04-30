@@ -1,5 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,4 +9,25 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   templateUrl: './sidebar.html',
   styleUrls: ['./sidebar.scss']
 })
-export class SidebarComponent {}
+export class SidebarComponent {
+  constructor(private http: HttpClient, private router: Router) {}
+
+  onLogout() {
+    if (confirm('Are you sure you want to logout?')) {
+      this.http.post('https://movin-backend-production.up.railway.app/api/auth/logout', {}).subscribe({
+        next: () => {
+          this.completeLogout();
+        },
+        error: (err) => {
+          console.error('Logout failed on server:', err);
+          this.completeLogout();
+        }
+      });
+    }
+  }
+
+  private completeLogout() {
+    localStorage.clear();
+    this.router.navigate(['/login']);
+  }
+}

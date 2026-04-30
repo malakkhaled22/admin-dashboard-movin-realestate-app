@@ -57,4 +57,34 @@
       }
     }
   }
+  .sidebar-footer {
+  margin-top: auto;
+  padding: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+  .logout-btn {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    background: rgba(238, 93, 80, 0.1);
+    color: #ee5d50;
+    border: 1px solid #ee5d50;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      background: #ee5d50;
+      color: white;
+      box-shadow: 0 4px 15px rgba(238, 93, 80, 0.3);
+    }
+
+    .emoji {
+      font-size: 18px;
+    }
+  }
+}
 }
