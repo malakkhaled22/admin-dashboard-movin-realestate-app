@@ -32,13 +32,17 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
               .pipe(
                 switchMap((res) => {
                   isRefreshing = false;
-                  const newAccToken = res.accessToken || res.token;
-                  localStorage.setItem('accessToken', newAccToken);
-                  refreshTokenSubject.next(newAccToken);
+                  const newAccToken = res.accessToken?.accessToken || res.accessToken || res.token;
+                  if (newAccToken) {
+                          localStorage.setItem('accessToken', newAccToken);
+                          refreshTokenSubject.next(newAccToken);
 
-                  return next(req.clone({
-                    setHeaders: { Authorization: `Bearer ${newAccToken}` }
-                  }));
+                          return next(req.clone({
+                            setHeaders: { Authorization: `Bearer ${newAccToken}` }
+                          }));
+                        } else {
+                          throw new Error('Token structure mismatch');
+                        }
                 }),
                 catchError((refreshErr) => {
                   isRefreshing = false;
