@@ -1,11 +1,11 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, CurrencyPipe, TitleCasePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-properties',
   standalone: true,
-  imports: [CommonModule, CurrencyPipe, TitleCasePipe],
+  imports: [CommonModule, CurrencyPipe, TitleCasePipe, FormsModule],
   templateUrl: './properties.html',
   styleUrls: ['./properties.scss']
 })
@@ -15,7 +15,9 @@ export class PropertiesComponent implements OnInit {
   currentPage: number = 1;
   totalPages: number = 1;
   limit: number = 10;
-
+  showRejectModal: boolean = false;
+  selectedId: string = '';
+  rejectedReason: string = '';
   readonly API_URL = 'https://movin-backend-production.up.railway.app/api/admin/properties';
 
   constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
@@ -66,13 +68,25 @@ export class PropertiesComponent implements OnInit {
   }
 
   reject(id: string) {
-
-    this.http.put(`${this.API_URL}/reject/${id}`, {}).subscribe({
-      next: () => {
-        alert('Property rejected successfully! 🚫');
-        this.fetchProperties(this.currentTab, this.currentPage);
-      },
-      error: (err) => alert(err.error?.message || 'Error rejecting property')
-    });
+  this.selectedId = id;
+  this.rejectedReason = '';
+  this.showRejectModal = true;
+}
+  confirmReject() {
+  if (!this.rejectedReason.trim()) {
+    alert('Please specify a reason for rejection');
+    return;
   }
+
+  this.http.put(`${this.API_URL}/reject/${this.selectedId}`, {
+    reason: this.rejectedReason
+  }).subscribe({
+    next: () => {
+      alert('Property rejected successfully! 🚫');
+      this.showRejectModal = false;
+      this.fetchProperties(this.currentTab, this.currentPage);
+    },
+    error: (err) => alert(err.error?.message || 'Error rejecting property')
+  });
+}
 }

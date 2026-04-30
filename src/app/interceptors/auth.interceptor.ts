@@ -1,7 +1,10 @@
 import { HttpInterceptorFn, HttpRequest, HttpHandlerFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { catchError, switchMap, throwError } from 'rxjs';
+import { catchError, switchMap, throwError, BehaviorSubject, filter, take } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+
+let isRefreshing = false;
+const refreshTokenSubject = new BehaviorSubject<any>(null);
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const http = inject(HttpClient);
@@ -16,28 +19,45 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(authReq).pipe(
     catchError((error) => {
-      if (error instanceof HttpErrorResponse && error.status === 401 || error.status === 403) {
-        const refreshToken = localStorage.getItem('refreshToken');
+      if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403) && !req.url.includes('refresh-token')) {
 
-        if (refreshToken) {
+        if (!isRefreshing) {
+          isRefreshing = true;
+          refreshTokenSubject.next(null);
 
-          return http.post<any>('https://movin-backend-production.up.railway.app/api/auth/refresh-token', { refreshToken })
-            .pipe(
-              switchMap((res) => {
-                localStorage.setItem('accessToken', res.accessToken);
+          const refreshToken = localStorage.getItem('refreshToken');
 
-                const newAuthReq = req.clone({
-                  setHeaders: { Authorization: `Bearer ${res.accessToken}` }
-                });
-                return next(newAuthReq);
-              }),
-              catchError((refreshErr) => {
+          if (refreshToken) {
+            return http.post<any>('https://movin-backend-production.up.railway.app/api/auth/refresh-token', { refreshToken })
+              .pipe(
+                switchMap((res) => {
+                  isRefreshing = false;
+                  const newAccToken = res.accessToken || res.token;
+                  localStorage.setItem('accessToken', newAccToken);
+                  refreshTokenSubject.next(newAccToken);
 
-                localStorage.clear();
-                window.location.href = '/login';
-                return throwError(() => refreshErr);
-              })
-            );
+                  return next(req.clone({
+                    setHeaders: { Authorization: `Bearer ${newAccToken}` }
+                  }));
+                }),
+                catchError((refreshErr) => {
+                  isRefreshing = false;
+                  localStorage.clear();
+                  window.location.href = '/login';
+                  return throwError(() => refreshErr);
+                })
+              );
+          }
+        } else {
+          return refreshTokenSubject.pipe(
+            filter(token => token !== null),
+            take(1),
+            switchMap(token => {
+              return next(req.clone({
+                setHeaders: { Authorization: `Bearer ${token}` }
+              }));
+            })
+          );
         }
       }
       return throwError(() => error);

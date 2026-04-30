@@ -60,6 +60,7 @@ export class OverviewComponent implements OnInit {
       case 'property': return 'green-light';
       case 'report': return 'yellow-light';
       case 'block': return 'red-light';
+      case 'auction': return 'green-light';
       default: return 'blue-light';
     }
   }
@@ -70,6 +71,7 @@ export class OverviewComponent implements OnInit {
       case 'property': return '🏠';
       case 'report': return '📝';
       case 'block': return '🚫';
+      case 'auction': return '⏳';
       default: return '🔔';
     }
   }
