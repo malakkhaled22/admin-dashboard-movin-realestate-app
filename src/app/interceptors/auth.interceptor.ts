@@ -32,24 +32,19 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
               .pipe(
                 switchMap((res) => {
                     isRefreshing = false;
-
-                    const newAccToken = res.accessToken?.accessToken || res.accessToken || res.token;
-                    const newRefToken = res.accessToken?.refreshToken || res.refreshToken;
-
+                    const newAccToken = res.accessToken?.accessToken;
+                    const newRefToken = res.accessToken?.refreshToken;
                     if (newAccToken) {
                         localStorage.setItem('accessToken', newAccToken);
-
                         if (newRefToken) {
                             localStorage.setItem('refreshToken', newRefToken);
                         }
-
                         refreshTokenSubject.next(newAccToken);
-
                         return next(req.clone({
                             setHeaders: { Authorization: `Bearer ${newAccToken}` }
                         }));
                     } else {
-                        throw new Error('Token structure mismatch');
+                        return throwError(() => new Error('Token structure mismatch'));
                     }
                 }),
                 catchError((refreshErr) => {
