@@ -31,18 +31,26 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
             return http.post<any>('https://movin-backend-production.up.railway.app/api/auth/refresh-token', { refreshToken })
               .pipe(
                 switchMap((res) => {
-                  isRefreshing = false;
-                  const newAccToken = res.accessToken?.accessToken || res.accessToken || res.token;
-                  if (newAccToken) {
-                          localStorage.setItem('accessToken', newAccToken);
-                          refreshTokenSubject.next(newAccToken);
+                    isRefreshing = false;
 
-                          return next(req.clone({
-                            setHeaders: { Authorization: `Bearer ${newAccToken}` }
-                          }));
-                        } else {
-                          throw new Error('Token structure mismatch');
+                    const newAccToken = res.accessToken?.accessToken || res.accessToken || res.token;
+                    const newRefToken = res.accessToken?.refreshToken || res.refreshToken;
+
+                    if (newAccToken) {
+                        localStorage.setItem('accessToken', newAccToken);
+
+                        if (newRefToken) {
+                            localStorage.setItem('refreshToken', newRefToken);
                         }
+
+                        refreshTokenSubject.next(newAccToken);
+
+                        return next(req.clone({
+                            setHeaders: { Authorization: `Bearer ${newAccToken}` }
+                        }));
+                    } else {
+                        throw new Error('Token structure mismatch');
+                    }
                 }),
                 catchError((refreshErr) => {
                   isRefreshing = false;

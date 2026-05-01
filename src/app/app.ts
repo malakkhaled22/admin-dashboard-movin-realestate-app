@@ -39,22 +39,20 @@ export class App implements OnInit {
     }
   }
 
-fetchAdminProfile() {
-  const token = localStorage.getItem('token');
-  if (!token) return;
+  fetchAdminProfile() {
+    const noCacheUrl = `https://movin-backend-production.up.railway.app/api/users/profile?t=${new Date().getTime()}`;
+    this.http.get<any>(noCacheUrl).subscribe({
+      next: (res) => {
+        console.log("Header received fresh data:", res.user);
+        this.adminData = res.user;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error("Profile fetch error in App Component:", err);
+      }
+    });
+  }
 
-  const noCacheUrl = `https://movin-backend-production.up.railway.app/api/users/profile?t=${new Date().getTime()}`;
-
-  this.http.get<any>(noCacheUrl, {
-    headers: { Authorization: `Bearer ${token}` }
-  }).subscribe({
-    next: (res) => {
-      console.log("Header received fresh data:", res.user);
-      this.adminData = res.user;
-      this.cdr.detectChanges();
-    }
-  });
-}
   isLoginPage(): boolean {
     return this.router.url.includes('/login');
   }
@@ -66,15 +64,10 @@ fetchAdminProfile() {
       return;
     }
 
-    this.http.get(
-      `https://movin-backend-production.up.railway.app/api/admin/search?q=${query}`,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token') || ''}`
-        }
-      }
-    ).subscribe({
-      next: (data: any) => {
+    const searchUrl = `https://movin-backend-production.up.railway.app/api/admin/search?q=${query}`;
+
+    this.http.get<any>(searchUrl).subscribe({
+      next: (data) => {
         this.searchResults = {
           users: data.users || [],
           properties: data.properties || []

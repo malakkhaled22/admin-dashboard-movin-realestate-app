@@ -17,7 +17,6 @@
           </div>
 
           <div class="results-body">
-            <!-- Users -->
             <div *ngFor="let user of searchResults.users" class="result-item" (click)="openModal(user, 'user')"
               style="cursor:pointer;">
               <div class="avatar-mini">
@@ -29,7 +28,6 @@
               </div>
             </div>
 
-            <!-- Properties -->
             <div *ngFor="let prop of searchResults.properties" class="result-item" (click)="openModal(prop, 'property')"
               style="cursor:pointer;">
               <div class="prop-icon">🏠</div>
@@ -39,7 +37,6 @@
               </div>
             </div>
 
-            <!-- No results -->
             <div *ngIf="searchResults.users.length === 0 && searchResults.properties.length === 0" class="no-results">
               No results found for "{{ searchQuery }}"
             </div>
@@ -58,14 +55,12 @@
   </div>
     </header>
 
-    <!-- Main content -->
     <main class="content-body">
       <router-outlet></router-outlet>
     </main>
 
   </div>
 
-  <!-- Modal -->
   <div *ngIf="selectedItem" class="modal-backdrop" (click)="closeModal()">
     <div class="modal-content" (click)="$event.stopPropagation()">
       <button class="close-btn" (click)="closeModal()">×</button>
