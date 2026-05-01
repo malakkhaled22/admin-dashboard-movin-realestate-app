@@ -46,11 +46,11 @@
 
   <div class="admin-profile-section" style="cursor: pointer;" routerLink="admin/profile">
       <div class="admin-info">
-        <p class="admin-name">{{ adminData?.username || 'Admin User' }}</p>
-        <span class="admin-email">{{ adminData?.email || 'admin@movin.com' }}</span>
+        <p class="admin-name">{{ adminData.username || 'Admin User' }}</p>
+        <span class="admin-email">{{ adminData.email || 'admin@movin.com' }}</span>
       </div>
       <div class="avatar-circle">
-        {{ adminData?.username ? adminData.username[0].toUpperCase() : 'A' }}
+        {{ adminData.username ? adminData.username[0].toUpperCase() : 'A' }}
       </div>
   </div>
     </header>
