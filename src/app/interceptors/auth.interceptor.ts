@@ -30,22 +30,25 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
           if (refreshToken) {
             return http.post<any>('https://movin-backend-production.up.railway.app/api/auth/refresh-token', { refreshToken })
               .pipe(
-                switchMap((res) => {
-                    isRefreshing = false;
-                    const newAccToken = res.accessToken?.accessToken;
-                    const newRefToken = res.accessToken?.refreshToken;
-                    if (newAccToken) {
-                        localStorage.setItem('accessToken', newAccToken);
-                        if (newRefToken) {
-                            localStorage.setItem('refreshToken', newRefToken);
-                        }
-                        refreshTokenSubject.next(newAccToken);
-                        return next(req.clone({
-                            setHeaders: { Authorization: `Bearer ${newAccToken}` }
-                        }));
-                    } else {
-                        return throwError(() => new Error('Token structure mismatch'));
-                    }
+          switchMap((res) => {
+              isRefreshing = false;
+              const newAccToken = res.accessToken?.accessToken || res.accessToken || res.token;
+              const newRefToken = res.refreshToken;
+
+              if (newAccToken) {
+                  localStorage.setItem('accessToken', newAccToken);
+                  if (newRefToken) {
+                      localStorage.setItem('refreshToken', newRefToken);
+                  }
+
+                  refreshTokenSubject.next(newAccToken);
+
+                  return next(req.clone({
+                      setHeaders: { Authorization: `Bearer ${newAccToken}` }
+                  }));
+              } else {
+                  return throwError(() => new Error('Token structure mismatch'));
+              }
                 }),
                 catchError((refreshErr) => {
                   isRefreshing = false;
