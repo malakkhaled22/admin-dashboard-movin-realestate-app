@@ -17,6 +17,7 @@ export const routes: Routes = [
     path: 'login',
     component: LoginComponent
   },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
     path: '',
     component: AdminLayout,
@@ -30,6 +31,5 @@ export const routes: Routes = [
       { path: 'admin/profile', component: ProfileComponent },
     ],
   },
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', redirectTo: 'login' }
 ];
