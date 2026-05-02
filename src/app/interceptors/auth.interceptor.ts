@@ -19,7 +19,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(authReq).pipe(
     catchError((error) => {
-      if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403) && !req.url.includes('refresh-token')) {
+      if (error instanceof HttpErrorResponse && (error.status === 403) && !req.url.includes('refresh-token')) {
 
         if (!isRefreshing) {
           isRefreshing = true;
