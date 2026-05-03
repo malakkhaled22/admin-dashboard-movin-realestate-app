@@ -92,3 +92,35 @@ $bg-light: #f4f7fe;
     }
   }
 }
+
+.report-cell {
+  .reports-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    background: #f4f7fe;
+    color: #a3aed0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: help;
+
+    &.warning {
+      background: #fff8e6;
+      color: #ffb400;
+    }
+
+    &.high-risk {
+      background: #feebe9;
+      color: #ee5d50;
+      animation: pulse-red 2s infinite;
+    }
+  }
+}
+
+@keyframes pulse-red {
+  0% { box-shadow: 0 0 0 0 rgba(238, 93, 80, 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(238, 93, 80, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(238, 93, 80, 0); }
+}

@@ -128,3 +128,40 @@ $bg-light: #f4f7fe;
     .confirm-btn { background: #ee5d50; color: white; }
   }
 }
+.owner-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .owner-name {
+    font-weight: 500;
+  }
+
+  .reports-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    background: #fff8e6;
+    color: #ffb400;
+    cursor: help;
+
+    i {
+      font-size: 10px;
+    }
+
+    &.high-risk {
+      background: #feebe9;
+      color: #ee5d50;
+      animation: pulse-red 2s infinite;
+    }
+  }
+}
+@keyframes pulse-red {
+  0% { box-shadow: 0 0 0 0 rgba(238, 93, 80, 0.4); }
+  70% { box-shadow: 0 0 0 6px rgba(238, 93, 80, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(238, 93, 80, 0); }
+}
