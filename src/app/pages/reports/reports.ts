@@ -10,6 +10,10 @@ import { CommonModule, DatePipe, SlicePipe } from '@angular/common';
   styleUrls: ['./reports.scss']
 })
 export class ReportsComponent implements OnInit {
+  currentPage: number = 1;
+  totalPages: number = 1;
+  limit: number = 10;
+
   reports: any[] = [];
   selectedReport: any = null;
 
@@ -21,14 +25,26 @@ export class ReportsComponent implements OnInit {
     this.fetchReports();
   }
 
-  fetchReports() {
-    this.http.get<any>(`${this.API_URL}/all`).subscribe({
+  fetchReports(page: number = 1) {
+    this.currentPage = page;
+    this.http.get<any>(`${this.API_URL}/all?page=${page}&limit=${this.limit}`).subscribe({
       next: (res) => {
         this.reports = res.reports || [];
+        this.totalPages = res.totalPages || 1;
         this.cdr.detectChanges();
       },
       error: (err) => console.error('Fetch reports error', err)
     });
+  }
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.fetchReports(page);
+    }
+  }
+
+  getPagesArray() {
+    return Array(this.totalPages).fill(0).map((x, i) => i + 1);
   }
 
   resolveReport(id: string) {

@@ -54,7 +54,19 @@
         </tr>
       </tbody>
     </table>
+        <div class="pagination-section" *ngIf="totalPages > 1">
+      <button class="page-nav" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Prev</button>
 
+      <div class="page-numbers">
+        <button *ngFor="let page of getPagesArray()"
+                [class.active]="page === currentPage"
+                (click)="goToPage(page)">
+          {{ page }}
+        </button>
+      </div>
+
+      <button class="page-nav" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
+    </div>
     <div *ngIf="reports.length === 0" class="empty-state">
       <p>No reports found.</p>
     </div>
