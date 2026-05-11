@@ -72,8 +72,12 @@ To avoid database bloat, we chose **Aggregation Pipelines** over storing static 
 
    ng serve -o
 
-4. **admin account** hint: its a fake account i put it temporarily just for testing
+4. **Admin Account** hint: its a fake account i put it temporarily just for testing
    
    email: drmohammedadmin@gmail.com
    
    password: 321546Admin54
+
+5. **Overview of Admin Dashboard**
+   Go To:
+   https://admin-dashboard-movin-realestate-ap.vercel.app
