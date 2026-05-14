@@ -23,7 +23,7 @@ export class AuctionsComponent implements OnInit {
   selectedId: string = '';
   rejectReason: string = '';
 
-  private baseUrl = 'https://movin-backend-production.up.railway.app/api/admin/auctions';
+  private baseUrl = 'https://movin-backend-production-e804.up.railway.app/api/admin/auctions';
 
   constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
 

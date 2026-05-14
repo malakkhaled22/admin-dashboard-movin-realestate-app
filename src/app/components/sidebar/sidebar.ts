@@ -14,7 +14,7 @@ export class SidebarComponent {
 
   onLogout() {
     if (confirm('Are you sure you want to logout?')) {
-      this.http.post('https://movin-backend-production.up.railway.app/api/auth/logout', {}).subscribe({
+      this.http.post('https://movin-backend-production-e804.up.railway.app/api/auth/logout', {}).subscribe({
         next: () => {
           this.completeLogout();
         },

@@ -16,7 +16,7 @@ export class ProfileComponent implements OnInit {
   showEditModal = false;
   editData: any = {};
 
-  readonly API_URL = 'https://movin-backend-production.up.railway.app/api/users';
+  readonly API_URL = 'https://movin-backend-production-e804.up.railway.app/api/users';
 
   constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
 
