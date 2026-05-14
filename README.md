@@ -1,59 +1,83 @@
-# AdminDashboard
+# Movin | Admin Dashboard & Management System
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.0.
+This repository contains the **Admin Dashboard** for the **Movin** real-estate platform. It is a robust management suite built to oversee properties, users, auctions, and complaints with a focus on security, transparency, and automated user feedback.
 
-## Development server
+---
 
-To start a local development server, run:
+## Key Features
 
-```bash
-ng serve
-```
+### 1. Advanced User Reputation System 
+We implemented a sophisticated "Safety-First" logic to identify high-risk accounts:
+* **Dynamic Report Counting:** Using MongoDB Aggregation Pipelines, the system calculates total reports against a user *and* their listed properties in real-time.
+* **Visual Risk Indicators:** High-risk users (5+ reports) are flagged with a **pulsing red badge** in the UI to alert administrators immediately.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### 2. End-to-End Approval Workflow 
+A strict moderation cycle ensures platform quality:
+* **Status-Based Visibility:** Properties and Auctions remain hidden from **Search** and **Overview** sections until they receive explicit `Approved` status from an admin.
+* **Auction Moderation:** Dedicated approval gate for auctions to verify starting prices and durations before they go live.
+* **Smart Filtering:** The Search Engine only indexes `Approved` listings to ensure users only see verified data.
 
-## Code scaffolding
+### 3. Rejection Logic & Feedback Loop 
+* **Reasoned Rejection:** When an admin rejects a listing, they must provide a specific reason (e.g., "Invalid documentation" or "Inaccurate location").
+* **Instant Notifications:** The system automatically triggers a notification to the seller's profile informing them of the decision and the specific reason for rejection.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### 4. User Activity & Profile Tracking 
+* **Activity Logs:** Users can track the progress of their listings (Pending, Approved, Rejected) directly from their profile, and admin can see all activities of users, properties, and auctions from the overview page.
+* **Status Transparency:** If a property is rejected, the reason is displayed in the user's activity panel for transparency.
 
-```bash
-ng generate component component-name
-```
+### 5. Comprehensive User & Report Management 
+* **Account Controls:** One-click `Block` and `Unblock` functionality.
+* **Polymorphic Reporting:** Handles complaints against both Users and Properties, sorted by urgency (Pending vs. Resolved).
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+## Tech Stack
 
-## Building
+### **Backend (Node.js & Express)**
+* **MongoDB & Mongoose:** Using complex **Aggregation Pipelines** for real-time data joining and reputation scoring.
+* **Notification Engine:** Automated triggers linked to the Approval/Rejection logic.
+* **JWT Authentication:** Secure admin routes with token rotation.
 
-To build the project run:
+### **Frontend (Angular 17+)**
+* **Standalone Architecture:** Clean and modular components.
+* **Reactive UI:** Utilizes `ChangeDetectorRef` and `RxJS` for a smooth, lag-free experience.
+* **SCSS Animations:** Custom keyframe animations for high-risk alerts (Pulse effects) and UI transitions.
 
-```bash
-ng build
-```
+---
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Data Architecture
 
-## Running unit tests
+To avoid database bloat, we chose **Aggregation Pipelines** over storing static counters. This ensures:
+1. **Accuracy:** The `reportsCount` is always live and reflects the actual state of the `reports` collection.
+2. **Efficiency:** Data joins happen at the database level, reducing the payload size sent to the frontend.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+### Logic Implementation:
+- **Targeting:** Reports are linked via `targetId` which can point to a User ID or Property ID.
+- **Sorting Logic:** `Pending` (Priority 1) -> `Resolved` (Priority 2), then by `Date` (Newest first).
+* **Notification Flow:** Admin Action -> DB Update -> Notification Trigger -> User Profile Update.
 
-```bash
-ng test
-```
+---
 
-## Running end-to-end tests
+## Installation & Setup
 
-For end-to-end (e2e) testing, run:
+1. **Clone the repo:**
+   ```bash
+   git clone https://github.com/malakkhaled22/admin-dashboard-movin-realestate-app.git
 
-```bash
-ng e2e
-```
+2. **Install Dependencies:**
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+   npm install
 
-## Additional Resources
+3. **Run the app**
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+   ng serve -o
+
+4. **Admin Account** hint: its a fake account i put it temporarily just for testing
+   
+   email: drmohammedadmin@gmail.com
+   
+   password: 321546Admin54
+
+5. **Overview of Admin Dashboard**
+   Go To:
+   https://admin-dashboard-movin-realestate-ap.vercel.app
