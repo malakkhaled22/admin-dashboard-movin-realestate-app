@@ -40,7 +40,7 @@ export class App implements OnInit {
   }
 
   fetchAdminProfile() {
-    const noCacheUrl = `https://movin-backend-production-e804.up.railway.app/api/users/profile?t=${new Date().getTime()}`;
+    const noCacheUrl = `http://localhost:3000/api/users/profile?t=${new Date().getTime()}`;
     this.http.get<any>(noCacheUrl).subscribe({
       next: (res) => {
         console.log("Header received fresh data:", res.user);
@@ -64,7 +64,7 @@ export class App implements OnInit {
       return;
     }
 
-    const searchUrl = `https://movin-backend-production-e804.up.railway.app/api/admin/search?q=${query}`;
+    const searchUrl = `http://localhost:3000/api/admin/search?q=${query}`;
 
     this.http.get<any>(searchUrl).subscribe({
       next: (data) => {

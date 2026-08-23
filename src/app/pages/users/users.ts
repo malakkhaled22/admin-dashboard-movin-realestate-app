@@ -15,7 +15,7 @@ export class UsersComponent implements OnInit {
   totalPages: number = 1;
   limit: number = 10;
 
-  readonly API_URL = 'https://movin-backend-production-e804.up.railway.app/api/admin';
+  readonly API_URL = 'http://localhost:3000/api/admin';
 
   constructor(
     private http: HttpClient,

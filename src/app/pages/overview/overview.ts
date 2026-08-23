@@ -24,7 +24,7 @@ export class OverviewComponent implements OnInit {
   }
 
   fetchActivities() {
-    this.http.get<any>('https://movin-backend-production-e804.up.railway.app/api/admin/activities').subscribe({
+    this.http.get<any>('http://localhost:3000/api/admin/activities').subscribe({
       next: (res) => {
         this.activities = res.activities || [];
         this.cdr.detectChanges();
@@ -34,7 +34,7 @@ export class OverviewComponent implements OnInit {
   }
 
   fetchStats() {
-    this.http.get<any>('https://movin-backend-production-e804.up.railway.app/api/admin/stats').subscribe({
+    this.http.get<any>('http://localhost:3000/api/admin/stats').subscribe({
       next: (res) => {
         this.stats = res;
         this.cdr.detectChanges();
@@ -45,7 +45,7 @@ export class OverviewComponent implements OnInit {
   }
 
   fetchAdminInfo() {
-    this.http.get<any>('https://movin-backend-production-e804.up.railway.app/api/users/profile').subscribe({
+    this.http.get<any>('http://localhost:3000/api/users/profile').subscribe({
       next: (res) => {
         this.adminData = res.user;
         this.cdr.detectChanges();

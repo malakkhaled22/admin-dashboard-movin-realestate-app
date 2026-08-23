@@ -17,7 +17,7 @@ export class ReportsComponent implements OnInit {
   reports: any[] = [];
   selectedReport: any = null;
 
-  readonly API_URL = 'https://movin-backend-production-e804.up.railway.app/api/admin/reports';
+  readonly API_URL = 'http://localhost:3000/api/admin/reports';
 
   constructor(private http: HttpClient, private cdr: ChangeDetectorRef) { }
 

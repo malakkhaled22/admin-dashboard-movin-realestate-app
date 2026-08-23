@@ -18,7 +18,7 @@ export class PropertiesComponent implements OnInit {
   showRejectModal: boolean = false;
   selectedId: string = '';
   rejectedReason: string = '';
-  readonly API_URL = 'https://movin-backend-production-e804.up.railway.app/api/admin/properties';
+  readonly API_URL = 'http://localhost:3000/api/admin/properties';
 
   constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
 

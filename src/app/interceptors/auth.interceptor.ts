@@ -28,7 +28,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
           const refreshToken = localStorage.getItem('refreshToken');
 
           if (refreshToken) {
-            return http.post<any>('https://movin-backend-production-e804.up.railway.app/api/auth/refresh-token', { refreshToken })
+            return http.post<any>('http://localhost:3000/api/auth/refresh-token', { refreshToken })
               .pipe(
           switchMap((res) => {
               isRefreshing = false;
