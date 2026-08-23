@@ -21,7 +21,7 @@ export class LoginComponent {
   constructor(private http: HttpClient, private router: Router) { }
   onLogin() {
   this.http.post(
-    'https://movin-backend-production-e804.up.railway.app/api/auth/login',
+    'http://localhost:3000/api/auth/login',
     this.loginData
   ).subscribe({
     next: (res: any) => {
